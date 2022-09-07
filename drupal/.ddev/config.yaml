@@ -1,4 +1,4 @@
-name: quickstart-druxt-serverless
+name: druxtjs-org-demo
 type: drupal9
 docroot: web
 php_version: "8.1"
