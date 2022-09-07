@@ -13,7 +13,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'quickstart-druxt-site',
+    title: 'DruxtJS demos',
     htmlAttrs: {
       lang: 'en'
     },
@@ -41,12 +41,14 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxt/postcss8',
     ['@nuxt/image', { domains: [baseUrl] }],
-    'druxt-site',
+    'druxt-entity',
+    'druxt-views',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [],
+  modules: ['@nuxtjs/tailwindcss'],
 
   // DruxtJS: https://druxtjs.org
   druxt: {
@@ -54,11 +56,7 @@ export default {
     // Enable the API proxy.
     proxy: { api: true },
     // Disable deprecated Entity fields.
-    entity: { components: { fields: false }},
-    // Disable the router middleware (redirect support) in favour of serverless.
-    router: { middleware: false },
-    // Set the default theme to render Site regions.
-    site: { theme: 'bartik' },
+    entity: { components: { fields: false }}
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
