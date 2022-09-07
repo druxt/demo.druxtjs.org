@@ -1,0 +1,111 @@
+{
+    "uuid": [
+        {
+            "value": "9bccfe99-db96-456a-9546-229f49c1cc32"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "project",
+            "target_type": "node_type",
+            "target_uuid": "bdd4c867-de7d-447b-b5ba-44a73836e7d9"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2022-09-07T04:25:21+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "revision_log": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "title": [
+        {
+            "value": "Umami food magazine"
+        }
+    ],
+    "created": [
+        {
+            "value": "2022-09-07T04:20:46+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2022-09-07T04:25:21+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": false
+        }
+    ],
+    "sticky": [
+        {
+            "value": false
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": "",
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "body": [],
+    "field_links": [
+        {
+            "uri": "https:\/\/demo.druxtjs.org",
+            "title": "Frontend",
+            "options": {
+                "attributes": []
+            }
+        },
+        {
+            "uri": "https:\/\/demo-api.druxtjs.org",
+            "title": "Backend",
+            "options": {
+                "attributes": []
+            }
+        },
+        {
+            "uri": "https:\/\/storybook.demo.druxtjs.org",
+            "title": "Storybook",
+            "options": {
+                "attributes": []
+            }
+        }
+    ]
+}
