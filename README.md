@@ -1,44 +1,13 @@
-# DruxtSite quickstart - Serverless Druxt
+# demo.druxtjs.org
 
-> One click, Fully Decoupled, Full Static, Serverless Drupal Site starter-kit with Druxt.
+> Made with DruxtJS
 
-DruxtSite connects Drupal to Nuxt via JSON:API to provide a framework for building a Fully Decoupled site.
-
-This template is configured to have full static content deployed to a CDN, without the need for a live Drupal backend.
-
-Develop, craft and create locally or in the cloud, deploy anywhere.
-
-This repostory provides a quickstart installation of:
-- Drupal 9 with Tome sync
-- Nuxt 2
-- DruxtSite
-
-
-## Quickstart
-
-Try it before you fork it:
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/druxt/quickstart-druxt-site-tome)
-
-
-## Getting started
-
-1. Click the **Use this template** button in GitHub and follow the on-screen instructions to **Create a new repository**.
-
-2. Once the repository has been generated, open it in Gitpod by appending `https://gitpod.io#` to the GitHub url.
-
-   Example: `https://gitpod.io#github.com/druxt/quickstart-druxt-site-tome`
-
-   _Note:_ If this is your first time using Gitpod, you can signup for a free plan with your Github account.
-
-3. Wait for your codebase to build.
-
-   _Note:_ To speed up this step, enable Prebuilds by follow the instructions @ https://www.gitpod.io/docs/prebuilds#enable-prebuilt-workspaces
+This is the source code for https://demo.druxtjs.org.
 
 
 ## How to use it
 
-Your environment contains a pre-install, pre-configured and running instance of Drupal with Tome, and Nuxt with the DruxtSite module enabled.
+Your environment contains a pre-install, pre-configured and running instance of Drupal with Tome, and Nuxt with Druxt.
 
 You can access the services in your browser, via the **Remote Explorer** extension, or via the URL pattern: `https://[PORT]-[GITPOD_ID].[GITPOD_SERVER].gitpod.io`
 
