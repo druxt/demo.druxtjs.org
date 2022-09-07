@@ -18,7 +18,7 @@
     ],
     "revision_timestamp": [
         {
-            "value": "2022-09-07T04:25:21+00:00",
+            "value": "2022-09-07T08:50:39+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -53,7 +53,7 @@
     ],
     "changed": [
         {
-            "value": "2022-09-07T04:25:21+00:00",
+            "value": "2022-09-07T08:50:39+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -84,7 +84,13 @@
             "langcode": "en"
         }
     ],
-    "body": [],
+    "body": [
+        {
+            "value": "<p>The Umami food magazine is the Drupal community built demonstration installation profile (say that three times fast). This Druxt frontend uses the DruxtSite module along with BootstrapVue components.<\/p>\r\n",
+            "format": "basic_html",
+            "summary": ""
+        }
+    ],
     "field_links": [
         {
             "uri": "https:\/\/demo.druxtjs.org",
@@ -103,6 +109,13 @@
         {
             "uri": "https:\/\/storybook.demo.druxtjs.org",
             "title": "Storybook",
+            "options": {
+                "attributes": []
+            }
+        },
+        {
+            "uri": "https:\/\/github.com\/druxt\/umami.demo.druxtjs.org",
+            "title": "Source code",
             "options": {
                 "attributes": []
             }
