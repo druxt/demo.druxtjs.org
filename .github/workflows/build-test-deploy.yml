@@ -54,16 +54,15 @@ jobs:
       - name: Install Nuxt.js 👨🏻‍💻
         run: cd nuxt && yarn
 
-      - name: Build dist 👨🏻‍💻
-        run: cd nuxt && yarn generate
-
-      # @TODO - Add linting
-      # - name: Run linting 🔎
-      #   run: cd nuxt && yarn lint
+      - name: Run linting 🔎
+        run: cd nuxt && yarn lint
 
       # @TODO - Add unit tests
       # - name: Run unit tests 🧪
       #   run: cd nuxt && yarn test:unit
+
+      - name: Build dist 👨🏻‍💻
+        run: cd nuxt && yarn generate
 
       # @TODO - Add e2e tests
       # - name: Run end-to-end tests 🧪
