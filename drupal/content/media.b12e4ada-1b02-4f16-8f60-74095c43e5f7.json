@@ -1,0 +1,92 @@
+{
+    "uuid": [
+        {
+            "value": "b12e4ada-1b02-4f16-8f60-74095c43e5f7"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image",
+            "target_type": "media_type",
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2022-09-10T02:16:23+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_user": [],
+    "revision_log_message": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "name": [
+        {
+            "value": "druxtjs-org-demo-umami-backend.png"
+        }
+    ],
+    "thumbnail": [
+        {
+            "alt": "Umami food magazine Drupal JSON:API backend",
+            "title": null,
+            "width": 3200,
+            "height": 1802,
+            "target_type": "file",
+            "target_uuid": "2c588f6b-cb08-4430-8d46-b98ceba259da"
+        }
+    ],
+    "created": [
+        {
+            "value": "2022-09-10T02:16:23+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2022-09-10T02:16:23+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "field_media_image": [
+        {
+            "alt": "Umami food magazine Drupal JSON:API backend",
+            "title": "",
+            "width": 3200,
+            "height": 1802,
+            "target_type": "file",
+            "target_uuid": "2c588f6b-cb08-4430-8d46-b98ceba259da"
+        }
+    ]
+}

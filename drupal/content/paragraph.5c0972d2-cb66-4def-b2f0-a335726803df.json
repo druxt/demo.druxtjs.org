@@ -37,7 +37,11 @@
             "value": true
         }
     ],
-    "revision_translation_affected": [],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
     "field_link": [
         {
             "uri": "https:\/\/storybook.demo.druxtjs.org",
@@ -47,5 +51,10 @@
             }
         }
     ],
-    "field_media": []
+    "field_media": [
+        {
+            "target_type": "media",
+            "target_uuid": "df44304a-fba6-4c7f-a76a-25c6d61e7255"
+        }
+    ]
 }
