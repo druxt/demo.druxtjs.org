@@ -32,11 +32,11 @@
               v-bind="{
                 settings: {
                   query: {
-                    include: ['field_media', 'field_media.field_media_image']
-                  }
+                    include: ['field_media', 'field_media.field_media_image'],
+                  },
                 },
                 type: link.type,
-                uuid: link.id
+                uuid: link.id,
               }"
               target="_blank"
             >
@@ -46,14 +46,25 @@
                   :href="entity.attributes.field_link.uri"
                   target="_blank"
                 >
-                  <template v-if="((entity.included || [])[1] || {}).type === 'file--file'">
+                  <template
+                    v-if="
+                      ((entity.included || [])[1] || {}).type === 'file--file'
+                    "
+                  >
                     <NuxtImg
                       class="absolute z-0"
-                      :src="[$druxt.settings.baseUrl, entity.included[1].attributes.uri.url].join('/')"
+                      :src="
+                        [
+                          $druxt.settings.baseUrl,
+                          entity.included[1].attributes.uri.url,
+                        ].join('/')
+                      "
                     />
                   </template>
 
-                  <div class="absolute bg-black flex gap-1 left-1 px-2 py-1 rounded z-1 bottom-1">
+                  <div
+                    class="absolute bg-black flex gap-1 left-1 px-2 py-1 rounded z-1 bottom-1"
+                  >
                     {{ entity.attributes.field_link.title }}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
