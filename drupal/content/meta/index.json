@@ -16,8 +16,17 @@
     "node.05208217-5670-4bd2-9bcd-267c18f9c742": [
         "user.4cf17172-8f59-4b81-8a15-43daa951c8ae"
     ],
-    "paragraph.4d9b997b-6bd6-4b35-b577-35284c609260": [],
+    "paragraph.4d9b997b-6bd6-4b35-b577-35284c609260": [
+        "media.6b514479-1512-4355-86b6-0686f612706f"
+    ],
     "paragraph.135769ff-6a09-4892-9cc4-1c48c3c4e83b": [],
     "paragraph.5c0972d2-cb66-4def-b2f0-a335726803df": [],
-    "paragraph.c111a051-9726-4e85-8cf5-659ce91e0f86": []
+    "paragraph.c111a051-9726-4e85-8cf5-659ce91e0f86": [],
+    "file.bc72647b-5e0d-41d3-bf80-ca47797aa60c": [
+        "user.4cf17172-8f59-4b81-8a15-43daa951c8ae"
+    ],
+    "media.6b514479-1512-4355-86b6-0686f612706f": [
+        "user.4cf17172-8f59-4b81-8a15-43daa951c8ae",
+        "file.bc72647b-5e0d-41d3-bf80-ca47797aa60c"
+    ]
 }
