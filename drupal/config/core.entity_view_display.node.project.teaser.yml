@@ -5,7 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.project.body
-    - field.field.node.project.field_links
+    - field.field.node.project.field_items
     - node.type.project
   module:
     - text
@@ -29,4 +29,4 @@ content:
     weight: 100
     region: content
 hidden:
-  field_links: true
+  field_items: true

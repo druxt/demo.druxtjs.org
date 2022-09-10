@@ -4,10 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.node.project.body
-    - field.field.node.project.field_links
+    - field.field.node.project.field_items
     - node.type.project
   module:
-    - link
+    - entity_reference_revisions
     - text
     - user
 id: node.project.default
@@ -22,17 +22,14 @@ content:
     third_party_settings: {  }
     weight: 101
     region: content
-  field_links:
-    type: link
+  field_items:
+    type: entity_reference_revisions_entity_view
     label: above
     settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    weight: 102
+    weight: 103
     region: content
   links:
     settings: {  }

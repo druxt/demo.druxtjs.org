@@ -1,0 +1,55 @@
+{
+    "uuid": [
+        {
+            "value": "c111a051-9726-4e85-8cf5-659ce91e0f86"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "link",
+            "target_type": "paragraphs_type",
+            "target_uuid": "8978331b-0f0a-4937-9904-72ec4137662c"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2022-09-10T00:21:53+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "field_link": [
+        {
+            "uri": "https:\/\/github.com\/druxt\/umami.demo.druxtjs.org",
+            "title": "Source code",
+            "options": {
+                "attributes": []
+            }
+        }
+    ],
+    "field_media": []
+}
