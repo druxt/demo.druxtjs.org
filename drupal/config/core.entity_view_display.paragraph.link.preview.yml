@@ -1,0 +1,38 @@
+uuid: c8de7845-4be7-49d2-a852-d6b8f8601856
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.preview
+    - field.field.paragraph.link.field_link
+    - field.field.paragraph.link.field_media
+    - paragraphs.paragraphs_type.link
+  module:
+    - link
+id: paragraph.link.preview
+targetEntityType: paragraph
+bundle: link
+mode: preview
+content:
+  field_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_media:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

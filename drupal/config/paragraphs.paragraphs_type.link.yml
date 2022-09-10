@@ -1,0 +1,10 @@
+uuid: 8978331b-0f0a-4937-9904-72ec4137662c
+langcode: en
+status: true
+dependencies: {  }
+id: link
+label: Link
+icon_uuid: null
+icon_default: null
+description: 'A basic link item.'
+behavior_plugins: {  }

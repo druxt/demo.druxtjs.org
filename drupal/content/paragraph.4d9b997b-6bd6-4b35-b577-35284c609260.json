@@ -1,0 +1,56 @@
+{
+    "uuid": [
+        {
+            "value": "4d9b997b-6bd6-4b35-b577-35284c609260"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "link",
+            "target_type": "paragraphs_type",
+            "target_uuid": "8978331b-0f0a-4937-9904-72ec4137662c"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2022-09-10T00:21:11+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [],
+    "field_link": [
+        {
+            "uri": "https:\/\/demo.druxtjs.org",
+            "title": "Frontend",
+            "options": {
+                "attributes": []
+            }
+        }
+    ],
+    "field_media": [
+        {
+            "target_type": "media",
+            "target_uuid": "6b514479-1512-4355-86b6-0686f612706f"
+        }
+    ]
+}

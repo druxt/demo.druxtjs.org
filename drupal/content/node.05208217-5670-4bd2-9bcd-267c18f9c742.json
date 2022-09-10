@@ -84,14 +84,5 @@
             "langcode": "en"
         }
     ],
-    "body": [],
-    "field_links": [
-        {
-            "uri": "https:\/\/github.com\/druxt\/social.demo.druxtjs.org",
-            "title": "Source code",
-            "options": {
-                "attributes": []
-            }
-        }
-    ]
+    "body": []
 }

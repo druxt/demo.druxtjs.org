@@ -1,0 +1,23 @@
+uuid: f7ea2176-cb86-450d-99a1-7c8df74f38c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_items
+    - node.type.project
+  module:
+    - entity_reference_revisions
+id: node.project.field_items
+field_name: field_items
+entity_type: node
+bundle: project
+label: Items
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings: {  }
+field_type: entity_reference_revisions

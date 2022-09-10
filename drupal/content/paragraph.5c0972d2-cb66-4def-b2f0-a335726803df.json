@@ -1,0 +1,56 @@
+{
+    "uuid": [
+        {
+            "value": "5c0972d2-cb66-4def-b2f0-a335726803df"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "link",
+            "target_type": "paragraphs_type",
+            "target_uuid": "8978331b-0f0a-4937-9904-72ec4137662c"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2022-09-10T00:21:37+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [],
+    "field_link": [
+        {
+            "uri": "https:\/\/storybook.demo.druxtjs.org",
+            "title": "Storybook",
+            "options": {
+                "attributes": []
+            }
+        }
+    ],
+    "field_media": [
+        {
+            "target_type": "media",
+            "target_uuid": "df44304a-fba6-4c7f-a76a-25c6d61e7255"
+        }
+    ]
+}

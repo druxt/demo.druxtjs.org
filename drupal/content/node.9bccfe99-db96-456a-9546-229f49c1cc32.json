@@ -18,7 +18,7 @@
     ],
     "revision_timestamp": [
         {
-            "value": "2022-09-07T08:50:39+00:00",
+            "value": "2022-09-10T02:26:56+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -53,7 +53,7 @@
     ],
     "changed": [
         {
-            "value": "2022-09-07T08:50:39+00:00",
+            "value": "2022-09-10T02:26:56+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -91,34 +91,22 @@
             "summary": ""
         }
     ],
-    "field_links": [
+    "field_items": [
         {
-            "uri": "https:\/\/demo.druxtjs.org",
-            "title": "Frontend",
-            "options": {
-                "attributes": []
-            }
+            "target_type": "paragraph",
+            "target_uuid": "4d9b997b-6bd6-4b35-b577-35284c609260"
         },
         {
-            "uri": "https:\/\/demo-api.druxtjs.org",
-            "title": "Backend",
-            "options": {
-                "attributes": []
-            }
+            "target_type": "paragraph",
+            "target_uuid": "5c0972d2-cb66-4def-b2f0-a335726803df"
         },
         {
-            "uri": "https:\/\/storybook.demo.druxtjs.org",
-            "title": "Storybook",
-            "options": {
-                "attributes": []
-            }
+            "target_type": "paragraph",
+            "target_uuid": "135769ff-6a09-4892-9cc4-1c48c3c4e83b"
         },
         {
-            "uri": "https:\/\/github.com\/druxt\/umami.demo.druxtjs.org",
-            "title": "Source code",
-            "options": {
-                "attributes": []
-            }
+            "target_type": "paragraph",
+            "target_uuid": "c111a051-9726-4e85-8cf5-659ce91e0f86"
         }
     ]
 }

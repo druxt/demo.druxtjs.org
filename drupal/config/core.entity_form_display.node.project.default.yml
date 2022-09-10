@@ -4,10 +4,10 @@ status: true
 dependencies:
   config:
     - field.field.node.project.body
-    - field.field.node.project.field_links
+    - field.field.node.project.field_items
     - node.type.project
   module:
-    - link
+    - paragraphs
     - path
     - text
 id: node.project.default
@@ -31,13 +31,24 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_links:
-    type: link_default
-    weight: 122
+  field_items:
+    type: paragraphs
+    weight: 123
     region: content
     settings:
-      placeholder_url: ''
-      placeholder_title: ''
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed_expand_nested
+      closed_mode: preview
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: link
+      features:
+        add_above: '0'
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
     third_party_settings: {  }
   path:
     type: path

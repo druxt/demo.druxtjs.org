@@ -1,0 +1,92 @@
+{
+    "uuid": [
+        {
+            "value": "c3c0fcea-3e8b-406b-8132-30fe1a87e329"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image",
+            "target_type": "media_type",
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2022-09-10T02:25:20+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_user": [],
+    "revision_log_message": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "name": [
+        {
+            "value": "druxtjs-org-demo-umami-github.png"
+        }
+    ],
+    "thumbnail": [
+        {
+            "alt": "Umami food magazine Druxt demo source code",
+            "title": null,
+            "width": 3200,
+            "height": 1802,
+            "target_type": "file",
+            "target_uuid": "1b4260b9-34ca-4083-a03f-76d81138bfc8"
+        }
+    ],
+    "created": [
+        {
+            "value": "2022-09-10T02:25:20+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2022-09-10T02:25:20+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "field_media_image": [
+        {
+            "alt": "Umami food magazine Druxt demo source code",
+            "title": "",
+            "width": 3200,
+            "height": 1802,
+            "target_type": "file",
+            "target_uuid": "1b4260b9-34ca-4083-a03f-76d81138bfc8"
+        }
+    ]
+}
