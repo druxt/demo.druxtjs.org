@@ -53,12 +53,15 @@
                   >
                     <NuxtImg
                       class="absolute z-0"
+                      height="180"
+                      loading="lazy"
                       :src="
                         [
                           $druxt.settings.baseUrl,
                           entity.included[1].attributes.uri.url,
                         ].join('/')
                       "
+                      width="320"
                     />
                   </template>
 
