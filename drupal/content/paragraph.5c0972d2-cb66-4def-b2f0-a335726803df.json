@@ -37,10 +37,14 @@
             "value": true
         }
     ],
-    "revision_translation_affected": [],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
     "field_link": [
         {
-            "uri": "https:\/\/storybook.demo.druxtjs.org",
+            "uri": "https:\/\/storybook.umami.demo.druxtjs.org",
             "title": "Storybook",
             "options": {
                 "attributes": []
