@@ -1432,6 +1432,11 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@import-maps/resolve@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/@import-maps/resolve/-/resolve-1.0.1.tgz"
+  integrity sha512-tWZNBIS1CoekcwlMuyG2mr0a1Wo5lb5lEHwwWvZo+5GLgr3e9LLDTtmgtCWEwBpXMkxn9D+2W9j2FY6eZQq0tA==
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.npmjs.org/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz"
@@ -1631,18 +1636,18 @@
   resolved "https://registry.npmjs.org/@netlify/binary-info/-/binary-info-1.0.0.tgz"
   integrity sha512-4wMPu9iN3/HL97QblBsBay3E1etIciR84izI3U+4iALY+JHCrI+a2jO0qbAZ/nxKoegypYEaiiqWXylm+/zfrw==
 
-"@netlify/build@^27.17.2":
-  version "27.17.2"
-  resolved "https://registry.npmjs.org/@netlify/build/-/build-27.17.2.tgz"
-  integrity sha512-JoLGa+JkHvsHel91F+zRhOrClkGFYzWprVPKIcRAGqJYl3c0g+t4c8xDpbFfrYSuaU+0bjB7QRh/VCmpPLIkBQ==
+"@netlify/build@^27.18.1":
+  version "27.18.1"
+  resolved "https://registry.npmjs.org/@netlify/build/-/build-27.18.1.tgz"
+  integrity sha512-FLTWRom+YRdyUPpGxGex7X24c4G3S6fT8nHBjkMurGssZre9MXeTbTkSmZmfuK+ZUgt/OoUPfIzAEETfWJPXag==
   dependencies:
     "@bugsnag/js" "^7.0.0"
     "@netlify/cache-utils" "^4.0.0"
     "@netlify/config" "^18.2.3"
-    "@netlify/edge-bundler" "^1.14.1"
+    "@netlify/edge-bundler" "^2.0.5"
     "@netlify/functions-utils" "^4.2.8"
     "@netlify/git-utils" "^4.0.0"
-    "@netlify/plugins-list" "^6.42.0"
+    "@netlify/plugins-list" "^6.44.0"
     "@netlify/run-utils" "^4.0.0"
     "@netlify/zip-it-and-ship-it" "^7.1.1"
     "@sindresorhus/slugify" "^2.0.0"
@@ -1737,15 +1742,17 @@
     validate-npm-package-name "^4.0.0"
     yargs "^17.3.1"
 
-"@netlify/edge-bundler@^1.14.1":
-  version "1.14.1"
-  resolved "https://registry.npmjs.org/@netlify/edge-bundler/-/edge-bundler-1.14.1.tgz"
-  integrity sha512-0FJSvK5kZlf093aaWyvcULRzeUImypHn63oVsC+t8xvR08bhA9LebrYHPgQ/0GhFA8yDY+tz25xrNJ6JKKDWEw==
+"@netlify/edge-bundler@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.npmjs.org/@netlify/edge-bundler/-/edge-bundler-2.0.5.tgz"
+  integrity sha512-HXnc9PnV4uO8JJsqVPqor6ujnYP27grTzR6EhBvM0VkSPftYt8CX5Utk/QyWEhTgZL7/9Iqe2tBJ5eAypsvtwA==
   dependencies:
+    "@import-maps/resolve" "^1.0.1"
     common-path-prefix "^3.0.0"
     del "^6.0.0"
     env-paths "^3.0.0"
     execa "^6.0.0"
+    find-up "^6.3.0"
     glob-to-regexp "^0.4.1"
     node-fetch "^3.1.1"
     node-stream-zip "^1.15.0"
@@ -1754,7 +1761,7 @@
     path-key "^4.0.0"
     semver "^7.3.5"
     tmp-promise "^3.0.3"
-    uuid "^8.3.2"
+    uuid "^9.0.0"
 
 "@netlify/esbuild-android-64@0.14.25":
   version "0.14.25"
@@ -1999,10 +2006,10 @@
   resolved "https://registry.npmjs.org/@netlify/open-api/-/open-api-2.12.0.tgz"
   integrity sha512-1n9VvO/9qM7cRB5f7NgSNqeUrovM7j9WVAY7ZQ4LtQuXSquFmO9Fku7WrV3zAUC6v2Y62fxGyJ0fRllYz5uXLw==
 
-"@netlify/plugins-list@^6.42.0":
-  version "6.42.0"
-  resolved "https://registry.npmjs.org/@netlify/plugins-list/-/plugins-list-6.42.0.tgz"
-  integrity sha512-wv4tjXH9tFRgUkWB1bnOuRzcDH5ZvAKQ1efuQwD2W6CtkMSJ5Nu74qbJZEMLb8bVVcmBLXDIcTquLXm5pXTL7w==
+"@netlify/plugins-list@^6.43.0", "@netlify/plugins-list@^6.44.0":
+  version "6.44.0"
+  resolved "https://registry.npmjs.org/@netlify/plugins-list/-/plugins-list-6.44.0.tgz"
+  integrity sha512-yl4A0WzHg7PhQoefJKnjD3f31EMErIdbAQNis97x3tNoPcKeTW6dV79qttKn3PQbb3WyiFxfKlsi3xMQO6l8Nw==
 
 "@netlify/run-utils@^4.0.0":
   version "4.0.1"
@@ -12648,17 +12655,17 @@ nested-error-stacks@^2.0.0, nested-error-stacks@^2.1.0:
   resolved "https://registry.npmjs.org/nested-error-stacks/-/nested-error-stacks-2.1.1.tgz"
   integrity sha512-9iN1ka/9zmX1ZvLV9ewJYEk9h7RyRRtqdK0woXcqohu8EWIerfPUjYJPg0ULy0UqP7cslmdGc8xKDJcojlKiaw==
 
-netlify-cli@11.7.1:
-  version "11.7.1"
-  resolved "https://registry.npmjs.org/netlify-cli/-/netlify-cli-11.7.1.tgz"
-  integrity sha512-rotVCdA0we7+x8YhBPpZKTYqYGuaRFc36v+C0odNBi9zZH/Bp7ickWmX3v47TdMLZGL/hZimX+XCG5bMtJzYSw==
+netlify-cli@11.8.0:
+  version "11.8.0"
+  resolved "https://registry.npmjs.org/netlify-cli/-/netlify-cli-11.8.0.tgz"
+  integrity sha512-ZCOoUonc/cXBWe7dxkXooILqS3BoyPpQlXZG5rJudCntzfO1EmPc7CFYx33vHFZgn9yjgQAEnLIvB3A//v7Trg==
   dependencies:
-    "@netlify/build" "^27.17.2"
+    "@netlify/build" "^27.18.1"
     "@netlify/config" "^18.2.3"
-    "@netlify/edge-bundler" "^1.14.1"
+    "@netlify/edge-bundler" "^2.0.5"
     "@netlify/framework-info" "^9.2.0"
     "@netlify/local-functions-proxy" "^1.1.1"
-    "@netlify/plugins-list" "^6.42.0"
+    "@netlify/plugins-list" "^6.43.0"
     "@netlify/zip-it-and-ship-it" "^7.1.1"
     "@octokit/rest" "^18.0.0"
     "@sindresorhus/slugify" "^1.1.0"
@@ -18315,6 +18322,11 @@ uuid@^8.0.0, uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
+
+uuid@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.npmjs.org/uuid/-/uuid-9.0.0.tgz"
+  integrity sha512-MXcSTerfPa4uqyzStbRoTgt5XIe3x5+42+q1sDuy3R5MDk66URdLMOZe5aPX/SQd+kuYAh0FdP/pO28IkQyTeg==
 
 v8-compile-cache-lib@^3.0.1:
   version "3.0.1"
