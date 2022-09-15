@@ -20,7 +20,7 @@
     "*.**": "prettier --check --ignore-unknown"
   },
   "dependencies": {
-    "core-js": "3.25.0",
+    "core-js": "3.25.1",
     "druxt-site": "0.13.0",
     "nuxt": "2.15.8"
   },
