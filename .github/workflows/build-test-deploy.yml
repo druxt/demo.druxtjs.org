@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@master
+        uses: actions/checkout@v4
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v3.5.0
@@ -31,7 +31,7 @@ jobs:
 
       - name: Get yarn cache directory path 🛠
         id: yarn-cache-dir-path
-        run: cd nuxt && echo "::set-output name=dir::$(yarn cache dir)"
+        run: cd nuxt && echo "dir=$(yarn cache dir)" >> "$GITHUB_OUTPUT"
 
       - name: Cache node_modules 📦
         uses: actions/cache@v3.0.8
@@ -67,6 +67,24 @@ jobs:
       # @TODO - Add e2e tests
       # - name: Run end-to-end tests 🧪
       #   run: cd nuxt && NODE_TLS_REJECT_UNAUTHORIZED=0 yarn test:cy
+
+      # The demo list is Tome content in drupal/content, so the generated site
+      # carries the real outbound links. This site advertised a storybook that
+      # returned 502 for two years without anyone noticing.
+      - name: Check links 🔗
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --max-concurrency 4
+            --accept 200,206,429
+            --timeout 30
+            --max-retries 3
+            --retry-wait-time 15
+            --exclude-path nuxt/dist/_nuxt
+            'nuxt/dist/**/*.html'
+          fail: true
+          jobSummary: true
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.2
