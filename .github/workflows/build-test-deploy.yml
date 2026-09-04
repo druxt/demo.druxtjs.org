@@ -63,6 +63,10 @@ jobs:
 
       - name: Build dist 👨🏻‍💻
         run: cd nuxt && yarn generate
+        env:
+          # Only main sends hits to the real GA4 property. Deploy previews and
+          # branch builds generate without the gtag snippet at all.
+          ANALYTICS_ENABLED: ${{ github.ref == 'refs/heads/main' }}
 
       # @TODO - Add e2e tests
       # - name: Run end-to-end tests 🧪

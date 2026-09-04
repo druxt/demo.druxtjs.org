@@ -1,0 +1,14 @@
+# demo.druxtjs.org
+#
+# A public showcase of Druxt demo sites. Everything here is meant to be
+# indexed; there is no crawler blocklist.
+
+User-agent: *
+Allow: /
+
+# Build artefacts of the Nuxt static export. They serve the same content the
+# HTML route already exposes, so indexing them only splits the page's signal
+# across two URLs.
+Disallow: /_nuxt/
+
+Sitemap: https://demo.druxtjs.org/sitemap.xml

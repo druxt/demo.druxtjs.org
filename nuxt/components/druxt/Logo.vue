@@ -10,7 +10,20 @@
     />
     <path
       d="M376 330v-1l1-2c1-4 2-8 1-12l-4-12-102-178-15-27h-1l-15 27-102 178-4 12a24 24 0 0 0 2 15c4 6 10 12 24 12h190c3 0 18-1 25-12zM256 152l93 163H163l93-163z"
-      fill="#2F495E"
+      :fill="ink"
     />
   </svg>
 </template>
+
+<script>
+export default {
+  props: {
+    // The third path is the wordmark ink. It is navy by default, which
+    // disappears on a dark ground, so callers on dark can pass a light value.
+    ink: {
+      type: String,
+      default: '#2F495E',
+    },
+  },
+}
+</script>
