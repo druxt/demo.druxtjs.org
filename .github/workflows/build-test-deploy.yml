@@ -42,7 +42,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - name: Setup ddev
-        uses: jonaseberle/github-action-setup-ddev@v1
+        uses: ddev/github-action-setup-ddev@v1
         with:
           autostart: false
       - name: Start ddev
