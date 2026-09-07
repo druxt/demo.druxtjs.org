@@ -48,7 +48,7 @@
         "composer-exit-on-patch-failure": true,
         "patches": {
             "drupal/core": {
-                "SQLite Connection::__destruct() queries a closed PDO handle at shutdown and the TypeError escapes its catch": "patches/sqlite-connection-destruct-throwable.patch"
+                "A Transaction or the SQLite driver destroyed after the PDO handle at shutdown queries a closed connection and dies with a TypeError": "patches/database-shutdown-after-pdo-closed.patch"
             }
         },
         "drupal-scaffold": {
