@@ -51,9 +51,12 @@ export default {
   // Target full static build.
   target: 'static',
 
-  // Ensure the root route is generated and crawled.
+  // Ensure the root route is generated and crawled. The build cache is off
+  // because the backend URL comes from the repository-root .env, which the
+  // cache does not watch, so a changed backend would generate the old build.
   generate: {
     routes: ['/'],
+    cache: false,
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head

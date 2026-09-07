@@ -121,12 +121,7 @@
                       class="h-full w-full object-cover opacity-90 group-hover:opacity-100"
                       height="180"
                       loading="lazy"
-                      :src="
-                        [
-                          $druxt.settings.baseUrl,
-                          entity.included[1].attributes.uri.url,
-                        ].join('/')
-                      "
+                      :src="fileUrl(entity.included[1])"
                       width="320"
                     />
                   </div>
@@ -188,3 +183,15 @@
     </template>
   </DruxtView>
 </template>
+
+<script>
+export default {
+  methods: {
+    // JSON:API returns the file URI as a root-relative path; resolve it
+    // against the backend rather than joining, which doubled the slash.
+    fileUrl(file) {
+      return new URL(file.attributes.uri.url, this.$druxt.settings.baseUrl).href
+    },
+  },
+}
+</script>
