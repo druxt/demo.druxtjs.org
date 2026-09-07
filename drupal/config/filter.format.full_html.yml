@@ -1,15 +1,21 @@
-uuid: 96196a15-4d7d-462c-abad-5acc562c6954
+uuid: cab88ca2-f4e1-4f41-ab45-02d5b6250b32
 langcode: en
 status: true
 dependencies:
   module:
     - editor
 _core:
-  default_config_hash: WNeK5FbcY8pXgEpbD_KgRzlF1-5PL3BJXwqaBctPTqw
+  default_config_hash: vpZysv3RHJjhYzq7O_q5q8mVlHdrSzKELmXyiX6RtV0
 name: 'Full HTML'
 format: full_html
 weight: 2
 filters:
+  editor_file_reference:
+    id: editor_file_reference
+    provider: editor
+    status: true
+    weight: 11
+    settings: {  }
   filter_align:
     id: filter_align
     provider: filter
@@ -28,9 +34,9 @@ filters:
     status: true
     weight: 10
     settings: {  }
-  editor_file_reference:
-    id: editor_file_reference
-    provider: editor
+  filter_image_lazy_load:
+    id: filter_image_lazy_load
+    provider: filter
     status: true
-    weight: 11
+    weight: 15
     settings: {  }

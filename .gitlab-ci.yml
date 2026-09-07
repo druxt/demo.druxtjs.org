@@ -29,7 +29,7 @@ default:
     - 'section_end() { printf "\e[0Ksection_end:%s:%s\r\e[0K\n" "$(date +%s)" "$1"; }'
 
 variables:
-  # Debian packages and PHP extensions Drupal 9.4 needs on the php:8.1 image.
+  # Debian packages and PHP extensions Drupal 11 needs on the php:8.4 image.
   PHP_APT_PACKAGES: 'git unzip libsqlite3-dev libzip-dev libicu-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libonig-dev libxml2-dev'
   PHP_EXTENSIONS: 'pdo_sqlite intl gd zip opcache'
   # Where drupal/.devtools starts the backend. Fixed here so nuxt generate,
@@ -69,20 +69,20 @@ variables:
     - !reference [.node, before_script]
     - npm --prefix nuxt ci --cache .npm --prefer-offline
 
-# PHP 8.1 for the Drupal 9.4 backend, with Node 16 alongside for the generate
+# PHP 8.4 for the Drupal 11 backend, with Node 16 alongside for the generate
 # step that needs both running at once.
 .php-node:
-  image: php:8.1
+  image: php:8.4
   interruptible: true
   cache:
-    key: php-8.1-composer
+    key: php-8.4-composer
     paths:
       - drupal/vendor/
       - .npm/
   before_script:
     - !reference [default, before_script]
     - section_start "toolchain" "Installing PHP extensions, Composer and Node"
-    - apt-get update -yqq && apt-get install -yqq $PHP_APT_PACKAGES python3 > /dev/null
+    - apt-get update -yqq && apt-get install -yqq $PHP_APT_PACKAGES python3 sqlite3 > /dev/null
     - docker-php-ext-configure gd --with-freetype --with-jpeg > /dev/null
     - docker-php-ext-install -j"$(nproc)" $PHP_EXTENSIONS > /dev/null
     - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.8.6 > /dev/null

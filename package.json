@@ -31,7 +31,7 @@
     "lint:cspell": "cspell lint --no-progress --no-must-find-files --gitignore --dot \"**/*.{js,mjs,cjs,vue,json,jsonc,md,yml,yaml}\"",
     "lint:private": "node scripts/lint-private-refs.mjs",
     "lint:attribution": "bash .gitlab/scripts/check-attribution.sh",
-    "lint:prose": "bash .gitlab/scripts/lint-prose.sh --all",
+    "lint:prose": "PROSE_LINT_GLOB='!drupal/**' bash .gitlab/scripts/lint-prose.sh --all",
     "lint:prose:install": "bash .gitlab/scripts/install-vale.sh .vale/bin .vale/styles",
     "lint:knip": "knip --include dependencies,unlisted --no-config-hints",
     "lint:commit": "commitlint",

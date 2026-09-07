@@ -23,6 +23,8 @@ Changes to this site are recorded here. The format is
 
 ### Changed
 
+- Drupal 11, with the configuration and content re-exported from it. The
+  Drupal 9.4 site and the core patch it needed are gone.
 - The front end installs with npm. The unused `yarn.lock` is gone.
 - The GitHub workflow runs on every pull request, whatever it targets.
 

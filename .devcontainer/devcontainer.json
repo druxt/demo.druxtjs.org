@@ -6,7 +6,7 @@
       "version": "16.18.1"
     },
     "ghcr.io/devcontainers/features/php:1": {
-      "version": "8.1",
+      "version": "8.4",
       "installComposer": true
     },
     // Installed through gh-release rather than the mise feature: that

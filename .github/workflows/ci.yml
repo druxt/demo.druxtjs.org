@@ -137,11 +137,7 @@ jobs:
   # and Tome content, and the site is generated against it. The generated site
   # is what the end-to-end checks read, the same as the GitLab pipeline.
   e2e:
-    # 22.04, not latest. Drupal 9.4's SQLite driver fails inside site-install
-    # on 24.04's newer SQLite ("StatementPrefetch: $pdo_connection must be of
-    # type PDO, null given"); the GitLab image and the dev container carry the
-    # older library and install cleanly.
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -149,7 +145,7 @@ jobs:
 
       - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
-          php-version: '8.1'
+          php-version: '8.4'
           extensions: pdo_sqlite, gd, intl, zip, opcache
           tools: composer:2
 

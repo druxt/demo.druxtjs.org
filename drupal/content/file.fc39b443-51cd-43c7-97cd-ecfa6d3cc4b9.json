@@ -22,7 +22,8 @@
     ],
     "uri": [
         {
-            "value": "public:\/\/2022-09\/druxtjs-org-demo-umami-storybook.png"
+            "value": "public:\/\/2022-09\/druxtjs-org-demo-umami-storybook.png",
+            "url": "\/sites\/default\/files\/2022-09\/druxtjs-org-demo-umami-storybook.png"
         }
     ],
     "filemime": [
@@ -42,14 +43,12 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T02:23:39+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T02:23:39+00:00"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-10T02:25:01+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T02:25:01+00:00"
         }
     ]
 }

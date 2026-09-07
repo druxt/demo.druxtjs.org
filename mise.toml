@@ -1,9 +1,9 @@
 # Toolchain for the whole repository: one `mise install` provides both.
 # Node matches .nvmrc (kept for nvm users) and is what Nuxt 2's webpack 4
-# build runs on. PHP matches drupal/composer.lock, which is Drupal 9.4.
+# build runs on. PHP matches drupal/composer.lock, which is Drupal 11.
 [tools]
 node = "16.18.1"
-php = "8.1"
+php = "8.4"
 
 [tasks.setup]
 description = "Install dependencies, provision Drupal (SQLite, Tome content), start the backend."

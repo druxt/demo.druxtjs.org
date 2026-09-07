@@ -30,7 +30,7 @@ in `drupal/`, and a Nuxt front end built with Druxt in `nuxt/`.
 
 | Path                | Purpose                                                               |
 | ------------------- | --------------------------------------------------------------------- |
-| `drupal/`           | Drupal 9.4 backend. `config/` and `content/` are the site             |
+| `drupal/`           | Drupal 11 backend. `config/` and `content/` are the site              |
 | `drupal/.devtools/` | Docker-free provisioning: assemble, provision, start, stop, info      |
 | `nuxt/`             | The Nuxt 2 front end. Generated to `nuxt/dist` and served statically  |
 | `scripts/`          | Repository tooling: the private-host lint and the static server       |
@@ -53,7 +53,7 @@ npm run lint:prose   # Vale, after `npm run lint:prose:install`
 
 ## Toolchain
 
-Node 16.18.1 and PHP 8.1, pinned in `mise.toml` and `.nvmrc`. Nuxt 2 builds on
+Node 16.18.1 and PHP 8.4, pinned in `mise.toml` and `.nvmrc`. Nuxt 2 builds on
 webpack 4, which does not run on a newer Node. The Playwright jobs run on the
 Playwright image's own Node, because Playwright 1.44 is the last release that
 supports Node 16 and the visual comparisons only need a served directory.

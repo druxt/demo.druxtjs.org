@@ -23,15 +23,10 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T00:21:37+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T00:21:37+00:00"
         }
     ],
-    "behavior_settings": [
-        {
-            "value": []
-        }
-    ],
+    "behavior_settings": [],
     "default_langcode": [
         {
             "value": true
@@ -45,6 +40,7 @@
     "field_link": [
         {
             "uri": "https:\/\/storybook.umami.demo.druxtjs.org",
+            "resolvable_uri": "https:\/\/storybook.umami.demo.druxtjs.org",
             "title": "Storybook",
             "options": {
                 "attributes": []

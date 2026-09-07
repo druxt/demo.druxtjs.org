@@ -22,8 +22,8 @@ which Netlify serves.
 
 ## Run it locally
 
-You need PHP 8.1 with the `pdo_sqlite`, `gd`, `intl` and `zip` extensions,
-Composer, and Node 16. [mise](https://mise.jdx.dev) installs the pinned
+You need PHP 8.3 or later with the `pdo_sqlite`, `gd`, `intl` and `zip`
+extensions, Composer, and Node 16. [mise](https://mise.jdx.dev) installs the pinned
 versions from `mise.toml`, and the dev container in `.devcontainer/` has them
 already.
 

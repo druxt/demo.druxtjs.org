@@ -22,7 +22,8 @@
     ],
     "uri": [
         {
-            "value": "public:\/\/2022-09\/druxtjs-org-demo-umami-backend.png"
+            "value": "public:\/\/2022-09\/druxtjs-org-demo-umami-backend.png",
+            "url": "\/sites\/default\/files\/2022-09\/druxtjs-org-demo-umami-backend.png"
         }
     ],
     "filemime": [
@@ -42,14 +43,12 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T02:16:23+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T02:16:23+00:00"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-10T02:16:43+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T02:16:43+00:00"
         }
     ]
 }

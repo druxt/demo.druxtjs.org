@@ -290,7 +290,7 @@ $settings['config_sync_directory'] = '../config';
  *   $settings['hash_salt'] = file_get_contents('/home/example/salt.txt');
  * @endcode
  */
-$settings['hash_salt'] = '';
+$settings['hash_salt'] = 'WLYXn98tWrgo-Dyzvjv5kXKvCW52mCJLVvf3y_ukVK2qwOnNSQjqeR_Oq8t4WfPZGjoEgqnA2Q';
 
 /**
  * Deployment identifier.
@@ -785,3 +785,15 @@ if (file_exists(__DIR__ . '/settings.local.php')) {
 # if (file_exists($app_root . '/' . $site_path . '/settings.local.php')) {
 #   include $app_root . '/' . $site_path . '/settings.local.php';
 # }
+$databases['default']['default'] = array (
+  'database' => '/tmp/druxtjs-demo-drupal-site.sqlite',
+  'prefix' => '',
+  'driver' => 'sqlite',
+  'namespace' => 'Drupal\\sqlite\\Driver\\Database\\sqlite',
+  'autoload' => 'core/modules/sqlite/src/Driver/Database/sqlite/',
+);
+
+// The database driver is an environment fact rather than site configuration:
+// the pipelines and the dev container run on SQLite, DDEV on MySQL. Keeping the
+// driver modules out of the export means one export installs on both.
+$settings['config_exclude_modules'] = ['mysql', 'pgsql', 'sqlite'];

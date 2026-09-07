@@ -23,15 +23,10 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T00:21:23+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T00:21:23+00:00"
         }
     ],
-    "behavior_settings": [
-        {
-            "value": []
-        }
-    ],
+    "behavior_settings": [],
     "default_langcode": [
         {
             "value": true
@@ -45,6 +40,7 @@
     "field_link": [
         {
             "uri": "https:\/\/api.umami.demo.druxtjs.org\/jsonapi",
+            "resolvable_uri": "https:\/\/api.umami.demo.druxtjs.org\/jsonapi",
             "title": "Backend",
             "options": {
                 "attributes": []

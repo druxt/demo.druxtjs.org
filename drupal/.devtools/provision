@@ -6,9 +6,9 @@
  * Provision the site from the committed configuration and Tome content.
  *
  * The site is fully described by drupal/config and drupal/content, so this
- * is `drush tome:install` against a throwaway SQLite database rather than a
- * fresh site:install. It is the Docker-free equivalent of the DDEV
- * `drupal-install` command and produces the same site.
+ * is a fresh site:install followed by the configuration and content imports,
+ * against a throwaway SQLite database. It is the Docker-free equivalent of
+ * the DDEV `drupal-install` command and produces the same site.
  *
  * The SQLite override is written to web/sites/default/settings.local.php,
  * which is gitignored. The committed settings.php includes that file when
@@ -57,9 +57,7 @@ file_put_contents('web/sites/default/settings.local.php', sprintf(
 ));
 PASS('SQLite database configured.');
 
-// The same sequence as `drush tome:install`, spelled out so the two users the
-// installer creates can be aligned with the committed content first.
-TASK('Installing the site from configuration.');
+TASK('Installing the site from the exported profile.');
 $profile = 'standard';
 if (preg_match('/^profile:\s*(\S+)/m', (string) file_get_contents('config/core.extension.yml'), $matches)) {
   $profile = $matches[1];
@@ -68,33 +66,22 @@ drush('site:install %s --yes --sites-subdir=default', $profile);
 drush('pm:enable tome_sync --yes');
 PASS('Site installed from the %s profile.', $profile);
 
-// The installer creates the anonymous and administrator users with fresh
-// UUIDs. The committed content has its own UUIDs for uid 0 and uid 1, and
-// whether Tome's import ends up updating those rows or inserting duplicates
-// depends on a deletion step that behaves differently across environments.
-// Giving the installed rows the committed UUIDs makes the import an update
-// everywhere.
-TASK('Aligning the installer users with the committed content.');
-$aligned = 0;
-foreach (glob('content/user.*.json') ?: [] as $file) {
-  $data = json_decode((string) file_get_contents($file), TRUE);
-  $uid = $data['uid'][0]['value'] ?? NULL;
-  $uuid = $data['uuid'][0]['value'] ?? NULL;
-  if (!in_array($uid, [0, 1], TRUE) || !is_string($uuid) || !preg_match('/^[0-9a-f-]{36}$/', $uuid)) {
-    continue;
-  }
-  drush('php-eval %s', sprintf(
-    '\\Drupal::database()->update("users")->fields(["uuid" => "%s"])->condition("uid", %d)->execute();',
-    $uuid,
-    $uid
-  ));
-  $aligned++;
+// The steps of `drush tome:import`, run one at a time: a configuration import
+// with the site UUID set to the export's first, then the content through
+// .devtools/import-content.php in this process. `tome:import` itself runs
+// each step in a Drush sub-process, and the command line it builds for those
+// does not start under Drush 13.
+TASK('Importing the configuration.');
+if (preg_match('/^uuid:\s*(\S+)/m', (string) file_get_contents('config/system.site.yml'), $matches)) {
+  drush('config:set system.site uuid %s --yes', $matches[1]);
 }
+drush('config:import --yes');
 drush('cache:rebuild');
-PASS('%d installer user(s) carry the committed UUIDs.', $aligned);
+PASS('Configuration imported.');
 
-TASK('Importing the Tome configuration and content.');
-drush('tome:import --yes');
+TASK('Importing the Tome content.');
+drush('php:script .devtools/import-content.php');
+drush('cache:rebuild');
 PASS('Content imported.');
 
 TASK('Rebuilding caches.');
