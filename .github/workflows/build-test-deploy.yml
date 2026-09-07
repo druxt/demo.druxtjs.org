@@ -5,10 +5,10 @@ on:
     branches:
       - main
       - develop
+  # Every pull request, whatever it targets. A branch filter here skipped
+  # stacked pull requests entirely, so a change based on another open branch
+  # got no build, no link check and no deploy preview until its base merged.
   pull_request:
-    branches:
-      - main
-      - develop
 
 jobs:
   ci:
