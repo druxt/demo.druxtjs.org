@@ -1,6 +1,23 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "@nuxtjs"
+  "extends": ["@nuxtjs"],
+  "packageRules": [
+    {
+      "description": "Tooling patch and minor bumps: nothing reaches the site, so they merge once the pipeline passes.",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "automerge": true,
+      "platformAutomerge": true
+    },
+    {
+      "description": "Drupal and PHP: the pipeline proves the site provisions and generates, and nothing deeper, so every update is reviewed.",
+      "matchManagers": ["composer"],
+      "automerge": false
+    },
+    {
+      "description": "Major bumps anywhere are reviewed.",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
   ]
 }

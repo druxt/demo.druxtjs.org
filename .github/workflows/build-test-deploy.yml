@@ -22,6 +22,10 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
+        with:
+          # Pull request builds run repository-controlled commands. Without
+          # this the checkout token stays readable to all of them.
+          persist-credentials: false
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v4
@@ -78,15 +82,10 @@ jobs:
       - name: Check links 🔗
         uses: lycheeverse/lychee-action@v2
         with:
+          # Settings live in .lychee.toml so a local run and this job agree.
           args: >-
-            --no-progress
-            --max-concurrency 4
+            --config .lychee.toml
             --root-dir ${{ github.workspace }}/nuxt/dist
-            --accept 200,206,429
-            --timeout 30
-            --max-retries 3
-            --retry-wait-time 15
-            --exclude-path nuxt/dist/_nuxt
             'nuxt/dist/**/*.html'
           fail: true
           jobSummary: true
@@ -97,7 +96,7 @@ jobs:
           publish-dir: './nuxt/dist'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "chore(ci): deploy from GitHub Actions"
+          deploy-message: 'chore(ci): deploy from GitHub Actions'
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true

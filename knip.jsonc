@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  // The root is tooling and the Playwright suite. nuxt/ and drupal/ are
+  // applications with their own manifests.
+  "entry": ["scripts/*.mjs", "test/e2e/*.spec.js", "playwright.config.js"],
+  "project": ["scripts/**/*.mjs", "test/**/*.js"],
+  "ignore": ["nuxt/**", "drupal/**"],
+  // lint:renovate runs the validator through npx --package, on purpose: the
+  // renovate package is far too large to install for one config check.
+  "ignoreDependencies": ["renovate"],
+}

@@ -1,0 +1,7 @@
+nuxt/
+drupal/
+package-lock.json
+styles/
+coverage/
+# markdownlint-cli2 0.10 parses this with JSON.parse and rejects trailing commas
+.markdownlint-cli2.jsonc

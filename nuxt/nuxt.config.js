@@ -1,4 +1,23 @@
-const baseUrl = process.env.BASE_URL || 'http://druxtjs-org-demo.ddev.site'
+import fs from 'fs'
+import path from 'path'
+
+// BASE_URL from the environment, else from the repository-root .env that
+// drupal/.devtools/start writes, else the DDEV project URL. A developer never
+// copies the backend URL between terminals.
+function readDotenvBaseUrl() {
+  try {
+    const contents = fs.readFileSync(path.join(__dirname, '..', '.env'), 'utf8')
+    const match = contents.match(/^\s*BASE_URL\s*=\s*(.*?)\s*$/m)
+    return match ? match[1].replace(/^(['"])(.*)\1$/, '$2') : null
+  } catch {
+    return null
+  }
+}
+
+const baseUrl =
+  process.env.BASE_URL ||
+  readDotenvBaseUrl() ||
+  'http://druxtjs-org-demo.ddev.site'
 
 // GA4. Same approach as the docs site: a plain gtag.js snippet rather than a
 // module, because @nuxtjs/google-analytics only ever spoke the Universal

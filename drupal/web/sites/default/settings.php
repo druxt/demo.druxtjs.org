@@ -761,6 +761,13 @@ if (file_exists(__DIR__ . '/settings.ddev.php') && getenv('IS_DDEV_PROJECT') == 
   include __DIR__ . '/settings.ddev.php';
 }
 
+// Local overrides, written by .devtools/provision for the Docker-free
+// backend. Gitignored, so a checkout without it (DDEV, production) is
+// unaffected.
+if (file_exists(__DIR__ . '/settings.local.php')) {
+  include __DIR__ . '/settings.local.php';
+}
+
 /**
  * Load local development override configuration, if available.
  *

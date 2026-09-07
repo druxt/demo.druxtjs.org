@@ -1,0 +1,22 @@
+{
+  // MD013 (line length) is off: prose reflows, and a hard wrap in Markdown
+  // shows up as a diff on every edit to the paragraph rather than the sentence.
+  // MD033 (inline HTML) is off: the README banner is an anchor around an image.
+  // MD024 is scoped to siblings so a changelog can repeat "Added" per release.
+  "config": {
+    "default": true,
+    "MD013": false,
+    "MD024": { "siblings_only": true },
+    "MD033": false,
+    "MD041": false
+  },
+  "ignores": [
+    "node_modules/**",
+    "**/node_modules/**",
+    "nuxt/dist/**",
+    "nuxt/.nuxt/**",
+    "drupal/**",
+    ".vale/**",
+    "CHANGELOG.md"
+  ]
+}
