@@ -16,6 +16,7 @@
     ],
     "require": {
         "composer/installers": "2.2.0",
+        "cweagans/composer-patches": "^1.7.3",
         "drupal-tome/tome_drush": "dev-master",
         "drupal/core-composer-scaffold": "9.4.7",
         "drupal/core-project-message": "9.4.7",
@@ -39,10 +40,17 @@
             "composer/installers": true,
             "drupal/core-composer-scaffold": true,
             "drupal/core-project-message": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "cweagans/composer-patches": true
         }
     },
     "extra": {
+        "composer-exit-on-patch-failure": true,
+        "patches": {
+            "drupal/core": {
+                "SQLite Connection::__destruct() queries a closed PDO handle at shutdown and the TypeError escapes its catch": "patches/sqlite-connection-destruct-throwable.patch"
+            }
+        },
         "drupal-scaffold": {
             "locations": {
                 "web-root": "web/"

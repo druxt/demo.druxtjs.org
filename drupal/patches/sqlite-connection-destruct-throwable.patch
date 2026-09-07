@@ -1,0 +1,18 @@
+--- a/modules/sqlite/src/Driver/Database/sqlite/Connection.php
++++ b/modules/sqlite/src/Driver/Database/sqlite/Connection.php
+@@ -191,9 +191,12 @@
+             unlink($this->connectionOptions['database'] . '-' . $prefix);
+           }
+         }
+-        catch (\Exception $e) {
+-          // Ignore the exception and continue. There is nothing we can do here
+-          // to report the error or fail safe.
++        catch (\Throwable $e) {
++          // Ignore the error and continue. There is nothing we can do here to
++          // report it or fail safe. \Throwable rather than \Exception: at
++          // shutdown the PDO handle can already be gone, and the resulting
++          // TypeError is not an \Exception, so it escaped this block and took
++          // down every drush site:install that dropped a table.
+         }
+       }
+     }
