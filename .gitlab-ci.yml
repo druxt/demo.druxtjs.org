@@ -328,6 +328,9 @@ secret-detection:
 generate:
   extends: .php-node
   stage: build
+  # Independent of the lint stage: a red linter should not hide whether the
+  # site still provisions and generates, which is the slower signal.
+  needs: []
   script:
     - section_start "backend" "Assembling, provisioning and starting the Drupal backend"
     - (cd drupal && .devtools/assemble && .devtools/provision && .devtools/start)
