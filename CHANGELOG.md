@@ -10,7 +10,8 @@ Changes to this site are recorded here. The format is
 - The Druxt repository standard: committed git hooks, Conventional Commits
   checked by hook and over the merge request range, an attribution check, Vale
   prose linting, cspell, markdownlint, yamllint, actionlint, knip, a
-  production dependency audit and a private-host lint.
+  production dependency audit that reports without blocking while the site is
+  on Nuxt 2, and a private-host lint.
 - A GitLab pipeline and a GitHub workflow running the same checks, with
   gitleaks secret scanning and a canary that proves the scanner still detects.
 - Docker-free provisioning of the Drupal backend in `drupal/.devtools`, from
