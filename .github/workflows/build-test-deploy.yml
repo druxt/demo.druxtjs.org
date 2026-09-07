@@ -31,20 +31,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          check-latest: true
+          cache: npm
+          cache-dependency-path: nuxt/package-lock.json
 
-      - name: Get yarn cache directory path 🛠
-        id: yarn-cache-dir-path
-        run: cd nuxt && echo "dir=$(yarn cache dir)" >> "$GITHUB_OUTPUT"
-
-      - name: Cache node_modules 📦
-        uses: actions/cache@v4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
       - name: Setup ddev
         uses: ddev/github-action-setup-ddev@v1
         with:
@@ -56,17 +45,17 @@ jobs:
         run: cd drupal && ddev drupal-install
 
       - name: Install Nuxt.js 👨🏻‍💻
-        run: cd nuxt && yarn
+        run: cd nuxt && npm ci
 
       - name: Run linting 🔎
-        run: cd nuxt && yarn lint
+        run: cd nuxt && npm run lint
 
       # @TODO - Add unit tests
       # - name: Run unit tests 🧪
-      #   run: cd nuxt && yarn test:unit
+      #   run: cd nuxt && npm run test:unit
 
       - name: Build dist 👨🏻‍💻
-        run: cd nuxt && yarn generate
+        run: cd nuxt && npm run generate
         env:
           # Only main sends hits to the real GA4 property. Deploy previews and
           # branch builds generate without the gtag snippet at all.
@@ -74,7 +63,7 @@ jobs:
 
       # @TODO - Add e2e tests
       # - name: Run end-to-end tests 🧪
-      #   run: cd nuxt && NODE_TLS_REJECT_UNAUTHORIZED=0 yarn test:cy
+      #   run: cd nuxt && NODE_TLS_REJECT_UNAUTHORIZED=0 npm run test:cy
 
       # The demo list is Tome content in drupal/content, so the generated site
       # carries the real outbound links. This site advertised a storybook that

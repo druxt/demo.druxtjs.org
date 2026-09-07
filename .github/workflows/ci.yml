@@ -85,7 +85,20 @@ jobs:
 
       - run: npm run lint:audit
 
-      - run: npm run lint:renovate
+  # renovate-config-validator is renovate itself, which needs Node 20 or later,
+  # so it runs apart from the app's Node 16.
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+
+      - run: npx --yes --package renovate renovate-config-validator
 
   test:
     runs-on: ubuntu-latest
@@ -124,7 +137,11 @@ jobs:
   # and Tome content, and the site is generated against it. The generated site
   # is what the end-to-end checks read, the same as the GitLab pipeline.
   e2e:
-    runs-on: ubuntu-latest
+    # 22.04, not latest. Drupal 9.4's SQLite driver fails inside site-install
+    # on 24.04's newer SQLite ("StatementPrefetch: $pdo_connection must be of
+    # type PDO, null given"); the GitLab image and the dev container carry the
+    # older library and install cleanly.
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:

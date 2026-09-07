@@ -157,9 +157,12 @@ lint:audit:
     - npm run lint:audit
     - section_end "audit"
 
+# On a current Node rather than the app's 16: the validator is renovate itself,
+# which needs Node 20 or later, and it reads only renovate.json.
 lint:renovate:
-  extends: .node
+  image: node:22
   stage: lint
+  interruptible: true
   script:
     - section_start "renovate" "Validating the Renovate configuration"
     - npm run lint:renovate
@@ -221,7 +224,7 @@ lint:json:
       while IFS= read -r -d '' f; do
         count=$((count + 1))
         if python3 -m json.tool "$f" > /dev/null 2>&1; then echo "  [PASS] $f"; else echo "  [FAIL] $f"; rc=1; fi
-      done < <(find . -name '*.json' -not -path './.git/*' -not -path '*/node_modules/*' -not -path './drupal/*' -not -path './.vale/*' -print0)
+      done < <(find . -name '*.json' -not -path './.git/*' -not -path '*/node_modules/*' -not -path './drupal/*' -not -path './.vale/*' -not -path './.vscode/*' -not -path './.devcontainer/*' -print0)
       echo "--- $count JSON file(s) checked ---"
       exit "$rc"
     - section_end "json"
