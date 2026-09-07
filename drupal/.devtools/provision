@@ -57,9 +57,45 @@ file_put_contents('web/sites/default/settings.local.php', sprintf(
 ));
 PASS('SQLite database configured.');
 
-TASK('Installing the site from configuration and importing the Tome content.');
-drush('tome:install --yes');
-PASS('Site installed and content imported.');
+// The same sequence as `drush tome:install`, spelled out so the two users the
+// installer creates can be aligned with the committed content first.
+TASK('Installing the site from configuration.');
+$profile = 'standard';
+if (preg_match('/^profile:\s*(\S+)/m', (string) file_get_contents('config/core.extension.yml'), $matches)) {
+  $profile = $matches[1];
+}
+drush('site:install %s --yes --sites-subdir=default', $profile);
+drush('pm:enable tome_sync --yes');
+PASS('Site installed from the %s profile.', $profile);
+
+// The installer creates the anonymous and administrator users with fresh
+// UUIDs. The committed content has its own UUIDs for uid 0 and uid 1, and
+// whether Tome's import ends up updating those rows or inserting duplicates
+// depends on a deletion step that behaves differently across environments.
+// Giving the installed rows the committed UUIDs makes the import an update
+// everywhere.
+TASK('Aligning the installer users with the committed content.');
+$aligned = 0;
+foreach (glob('content/user.*.json') ?: [] as $file) {
+  $data = json_decode((string) file_get_contents($file), TRUE);
+  $uid = $data['uid'][0]['value'] ?? NULL;
+  $uuid = $data['uuid'][0]['value'] ?? NULL;
+  if (!in_array($uid, [0, 1], TRUE) || !is_string($uuid) || !preg_match('/^[0-9a-f-]{36}$/', $uuid)) {
+    continue;
+  }
+  drush('php-eval %s', sprintf(
+    '\\Drupal::database()->update("users")->fields(["uuid" => "%s"])->condition("uid", %d)->execute();',
+    $uuid,
+    $uid
+  ));
+  $aligned++;
+}
+drush('cache:rebuild');
+PASS('%d installer user(s) carry the committed UUIDs.', $aligned);
+
+TASK('Importing the Tome configuration and content.');
+drush('tome:import --yes');
+PASS('Content imported.');
 
 TASK('Rebuilding caches.');
 drush('cache:rebuild');
