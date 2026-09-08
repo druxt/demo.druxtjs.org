@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           # Pull request builds run repository-controlled commands. Without
           # this the checkout token stays readable to all of them.
