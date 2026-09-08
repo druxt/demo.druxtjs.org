@@ -141,10 +141,9 @@ jobs:
   # and Tome content, and the site is generated against it. The generated site
   # is what the end-to-end checks read, the same as the GitLab pipeline.
   e2e:
-    # Pinned to the release the GitLab job's Playwright image is built on.
-    # `ubuntu-latest` moved to 24.04, where Playwright 1.44's dependency
-    # install asks for libasound2, a package that release no longer has.
-    runs-on: ubuntu-22.04
+    # Pinned, not `ubuntu-latest`: Drupal 11 needs SQLite 3.45, which 22.04
+    # does not ship, and a floating label changed release mid-day once.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -185,7 +184,10 @@ jobs:
 
       - run: npm run generate
 
-      - run: npx playwright install --with-deps chromium
+      # The browser only. The hosted image ships Chrome and its shared
+      # libraries, and `--with-deps` on this Playwright asks apt for 22.04
+      # package names that 24.04 has renamed.
+      - run: npx playwright install chromium
 
       # Visual comparisons are excluded here on purpose: the committed
       # baselines come from the GitLab runner, and this runner renders
