@@ -1,0 +1,483 @@
+---
+# The pipeline for demo.druxtjs.org: the Druxt repository standard applied to
+# a site with a Drupal backend in drupal/ and a Nuxt front end in nuxt/.
+#
+# The backend is provisioned without Docker, from the committed configuration
+# and Tome content, by drupal/.devtools. The front end is generated against
+# that backend, and the generated site is what the end-to-end, visual and
+# preview jobs use. GitHub runs the same checks from .github/workflows/ci.yml.
+
+stages:
+  - lint
+  - build
+  - test
+  - visual
+  - preview
+
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+    - if: $CI_COMMIT_BRANCH && $CI_OPEN_MERGE_REQUESTS
+      when: never
+    - if: $CI_COMMIT_BRANCH
+
+default:
+  tags: [docker]
+  timeout: 30m
+  before_script:
+    - 'section_start() { local n="$1" t="${2:-$1}"; printf "\e[0Ksection_start:%s:%s\r\e[0K%s\n" "$(date +%s)" "$n" "$t"; }'
+    - 'section_end() { printf "\e[0Ksection_end:%s:%s\r\e[0K\n" "$(date +%s)" "$1"; }'
+
+variables:
+  # Debian packages and PHP extensions Drupal 11 needs on the php:8.4 image.
+  PHP_APT_PACKAGES: 'git unzip libsqlite3-dev libzip-dev libicu-dev libpng-dev libjpeg62-turbo-dev libfreetype6-dev libonig-dev libxml2-dev'
+  PHP_EXTENSIONS: 'pdo_sqlite intl gd zip opcache'
+  # Where drupal/.devtools starts the backend. Fixed here so nuxt generate,
+  # which reads BASE_URL from the repository-root .env, has a known target.
+  WEBSERVER_HOST: '127.0.0.1'
+  WEBSERVER_PORT: '8888'
+
+# Root tooling on the Node the site builds with. corepack reads the
+# packageManager field, so the npm the lockfile was written by installs it.
+.node:
+  image: node:16.18.1
+  interruptible: true
+  cache:
+    key:
+      files:
+        - package-lock.json
+      prefix: node-16.18.1
+    paths:
+      - .npm/
+  before_script:
+    - !reference [default, before_script]
+    - corepack enable
+    - corepack prepare --activate
+    - npm ci --cache .npm --prefer-offline
+
+# The front end's own dependencies, for jobs that build or test it.
+.nuxt:
+  extends: .node
+  cache:
+    key:
+      files:
+        - nuxt/package-lock.json
+      prefix: nuxt-16.18.1
+    paths:
+      - .npm/
+  before_script:
+    - !reference [.node, before_script]
+    - npm --prefix nuxt ci --cache .npm --prefer-offline
+
+# PHP 8.4 for the Drupal 11 backend, with Node 16 alongside for the generate
+# step that needs both running at once.
+.php-node:
+  image: php:8.4
+  interruptible: true
+  cache:
+    key: php-8.4-composer
+    paths:
+      - drupal/vendor/
+      - .npm/
+  before_script:
+    - !reference [default, before_script]
+    - section_start "toolchain" "Installing PHP extensions, Composer and Node"
+    - apt-get update -yqq && apt-get install -yqq $PHP_APT_PACKAGES python3 sqlite3 > /dev/null
+    - docker-php-ext-configure gd --with-freetype --with-jpeg > /dev/null
+    - docker-php-ext-install -j"$(nproc)" $PHP_EXTENSIONS > /dev/null
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --version=2.8.6 > /dev/null
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash > /dev/null 2>&1
+    - export NVM_DIR="$HOME/.nvm" && . "$NVM_DIR/nvm.sh" --no-use && nvm install > /dev/null && nvm use > /dev/null
+    - node --version && php --version | head -1
+    - section_end "toolchain"
+
+#
+# --- Lint ---
+#
+
+lint:js:
+  extends: .node
+  stage: lint
+  script:
+    - section_start "eslint" "Linting the tooling and the front end"
+    - npm run lint:js
+    - npm --prefix nuxt ci --cache .npm --prefer-offline
+    - npm --prefix nuxt run lint
+    - section_end "eslint"
+
+lint:format:
+  extends: .node
+  stage: lint
+  script:
+    - section_start "prettier" "Checking formatting"
+    - npm run lint:format
+    - section_end "prettier"
+
+lint:md:
+  extends: .node
+  stage: lint
+  script:
+    - section_start "markdownlint" "Linting Markdown"
+    - npm run lint:md
+    - section_end "markdownlint"
+
+lint:cspell:
+  extends: .node
+  stage: lint
+  script:
+    - section_start "cspell" "Spell checking"
+    - npm run lint:cspell
+    - section_end "cspell"
+
+# This repository is public. A host only the author can reach must never reach
+# a tracked file.
+lint:private:
+  extends: .node
+  stage: lint
+  script:
+    - section_start "private-refs" "Checking for private host references"
+    - npm run lint:private
+    - section_end "private-refs"
+
+lint:knip:
+  extends: .node
+  stage: lint
+  script:
+    - section_start "knip" "Checking for unused and undeclared dependencies"
+    - npm run lint:knip
+    - section_end "knip"
+
+# Production only, for the front end as well as the tooling: a runtime
+# dependency is what reaches a visitor. Reporting only on this Nuxt 2 tree:
+# the runtime findings sit behind nuxt, webpack 4 and druxt-site and clear
+# with the Nuxt 3 migration, not before. The count is in the trace.
+lint:audit:
+  extends: .nuxt
+  stage: lint
+  allow_failure: true
+  script:
+    - section_start "audit" "Auditing runtime dependencies"
+    - npm run lint:audit
+    - section_end "audit"
+
+# On a current Node rather than the app's 16: the validator is renovate itself,
+# which needs Node 20 or later, and it reads only renovate.json.
+lint:renovate:
+  image: node:22
+  stage: lint
+  interruptible: true
+  script:
+    - section_start "renovate" "Validating the Renovate configuration"
+    - npm run lint:renovate
+    - section_end "renovate"
+
+# The merge request's own commits. This repository squash-merges, so a prose
+# title becomes the commit subject and breaks the next push to the target.
+lint:commit:
+  extends: .node
+  stage: lint
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  script:
+    - section_start "commitlint" "Validating commit messages"
+    - git fetch origin "$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" --depth 50
+    - npm run lint:commit -- --from "origin/$CI_MERGE_REQUEST_TARGET_BRANCH_NAME" --to HEAD --verbose
+    - section_end "commitlint"
+
+# The work is the author's. No commit, merge request description or tracked
+# file may credit an AI tool as author, co-author or generator.
+lint:attribution:
+  image: node:16.18.1
+  stage: lint
+  interruptible: true
+  variables:
+    GIT_DEPTH: 0
+  script:
+    - section_start "attribution" "Checking for AI attribution"
+    - bash .gitlab/scripts/check-attribution.sh
+    - section_end "attribution"
+
+# Project voice over the markdown a change touches, its commit messages and
+# the merge request description. drupal/ is Drupal's own scaffold text.
+lint:prose:
+  image: node:16.18.1
+  stage: lint
+  interruptible: true
+  variables:
+    GIT_DEPTH: 0
+    PROSE_LINT_GLOB: '!drupal/**'
+  cache:
+    key: vale-3.17.1
+    paths:
+      - .vale/
+  script:
+    - section_start "prose" "Linting prose with Vale"
+    - bash .gitlab/scripts/install-vale.sh .vale/bin .vale/styles
+    - bash .gitlab/scripts/lint-prose.sh
+    - section_end "prose"
+
+lint:json:
+  stage: lint
+  image: python:3.12-slim
+  interruptible: true
+  script:
+    - section_start "json" "Validating JSON"
+    - |
+      rc=0; count=0
+      while IFS= read -r -d '' f; do
+        count=$((count + 1))
+        if python3 -m json.tool "$f" > /dev/null 2>&1; then echo "  [PASS] $f"; else echo "  [FAIL] $f"; rc=1; fi
+      done < <(find . -name '*.json' -not -path './.git/*' -not -path '*/node_modules/*' -not -path './drupal/*' -not -path './.vale/*' -not -path './.vscode/*' -not -path './.devcontainer/*' -print0)
+      echo "--- $count JSON file(s) checked ---"
+      exit "$rc"
+    - section_end "json"
+
+lint:shell:
+  stage: lint
+  image: koalaman/shellcheck-alpine:v0.10.0
+  interruptible: true
+  before_script: []
+  script:
+    - shellcheck -S warning .gitlab/scripts/*.sh .githooks/*
+
+# yamllint covers this file and the workflows; actionlint covers the workflows,
+# which nothing on the GitHub side lints before a push.
+lint:yaml:
+  stage: lint
+  image: python:3.12-slim
+  interruptible: true
+  variables:
+    ACTIONLINT_VERSION: '1.7.12'
+    ACTIONLINT_SHA256_X64: '8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8'
+    ACTIONLINT_SHA256_ARM64: '325e971b6ba9bfa504672e29be93c24981eeb1c07576d730e9f7c8805afff0c6'
+  script:
+    - section_start "yamllint" "Linting YAML"
+    - pip install --quiet yamllint
+    - 'yamllint -d "{extends: default, rules: {line-length: {max: 200, level: warning}}}" .gitlab-ci.yml .github/workflows/'
+    - section_end "yamllint"
+    - section_start "actionlint" "Linting GitHub workflows"
+    - apt-get update -qq && apt-get install -y -qq curl > /dev/null
+    - |
+      case "$(uname -m)" in
+        aarch64|arm64) al_arch=arm64; al_sha="$ACTIONLINT_SHA256_ARM64" ;;
+        x86_64)        al_arch=amd64; al_sha="$ACTIONLINT_SHA256_X64" ;;
+        *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+      esac
+      curl -sSLo actionlint.tar.gz "https://github.com/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_${al_arch}.tar.gz"
+      echo "${al_sha}  actionlint.tar.gz" | sha256sum -c -
+      tar -xzf actionlint.tar.gz actionlint
+      ./actionlint -color
+    - section_end "actionlint"
+
+#
+# --- Secret detection ---
+#
+
+secret-detection:
+  stage: lint
+  image: alpine:3.21
+  interruptible: true
+  dependencies: []
+  variables:
+    GIT_DEPTH: 0
+    GITLEAKS_VERSION: '8.30.1'
+    GITLEAKS_SHA256_X64: '551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb'
+    GITLEAKS_SHA256_ARM64: 'e4a487ee7ccd7d3a7f7ec08657610aa3606637dab924210b3aee62570fb4b080'
+  script:
+    - section_start "gitleaks" "Scanning for committed secrets"
+    - apk add --no-cache curl tar git > /dev/null
+    - |
+      case "$(uname -m)" in
+        aarch64|arm64) gl_arch=arm64; gl_sha="$GITLEAKS_SHA256_ARM64" ;;
+        x86_64)        gl_arch=x64;   gl_sha="$GITLEAKS_SHA256_X64" ;;
+        *) echo "Unsupported architecture: $(uname -m)" >&2; exit 1 ;;
+      esac
+      curl -sSLo gitleaks.tar.gz "https://github.com/gitleaks/gitleaks/releases/download/v${GITLEAKS_VERSION}/gitleaks_${GITLEAKS_VERSION}_linux_${gl_arch}.tar.gz"
+      echo "${gl_sha}  gitleaks.tar.gz" | sha256sum -c -
+      tar -xzf gitleaks.tar.gz gitleaks
+    - ./gitleaks detect --source . --log-opts="$CI_COMMIT_SHA" --no-banner --redact --verbose
+    - section_end "gitleaks"
+    # A scan that finds nothing looks identical to a scan that cannot find
+    # anything. Plant three credentials outside the repository and assert all
+    # three are reported. Each value is split so no fragment in this file
+    # triggers the rule it exercises; fixed values, because detection is
+    # keyword-driven and a generated value fires only sometimes.
+    - section_start "canary" "Checking that the scanner still detects"
+    - |
+      canary="$(mktemp -d)"
+      pat="gh""p_8fK2mQ7xR4tV9nB3jH6yW1sZ5cD8gL0aE4uY"
+      stripe="sk""_live_51aBcD2eFgH3iJkL4mNoP5qR6sTuV7wXyZ8a"
+      slack="xo""xb-263594753641-2529420432-J1n4h6a9pQrStUvWxYz1AbCd"
+      printf 'a = "%s"\nb = "%s"\nc = "%s"\n' "$pat" "$stripe" "$slack" > "$canary/canary.txt"
+      ./gitleaks detect --no-git --source "$canary" --no-banner --redact \
+        --report-format json --report-path "$canary/report.json" || true
+      found=$(grep -c '"RuleID"' "$canary/report.json" || true)
+      rm -rf "$canary"
+      if [ "$found" != "3" ]; then
+        echo "The canary planted 3 credentials and gitleaks reported $found."
+        echo "The scan above proves nothing while this is true."
+        exit 1
+      fi
+      echo "Canary detected 3 of 3 planted credentials."
+    - section_end "canary"
+
+#
+# --- Build and test ---
+#
+
+# Provision the backend from the committed configuration and content, then
+# generate the site against it. The generated site is the artifact every later
+# stage reads, so this is the one job that needs PHP and Node together.
+generate:
+  extends: .php-node
+  stage: build
+  # Independent of the lint stage: a red linter should not hide whether the
+  # site still provisions and generates, which is the slower signal.
+  needs: []
+  script:
+    - section_start "backend" "Assembling, provisioning and starting the Drupal backend"
+    - (cd drupal && .devtools/assemble && .devtools/provision && .devtools/start)
+    - . ./.env && curl -sf "${BASE_URL}/jsonapi" | grep -q '"jsonapi"'
+    - section_end "backend"
+    - section_start "generate" "Generating the site"
+    - npm ci --cache .npm --prefer-offline
+    - npm --prefix nuxt ci --cache .npm --prefer-offline
+    - npm run generate
+    - test -f nuxt/dist/index.html
+    - section_end "generate"
+  artifacts:
+    paths:
+      - nuxt/dist/
+    expire_in: 1 week
+
+test:unit:
+  extends: .nuxt
+  stage: test
+  needs: []
+  script:
+    - section_start "jest" "Running unit tests"
+    - npm test -- --reporters=default --reporters=jest-junit --runInBand
+    - section_end "jest"
+  artifacts:
+    when: always
+    reports:
+      junit: nuxt/reports/junit/junit.xml
+      coverage_report:
+        coverage_format: cobertura
+        path: nuxt/coverage/cobertura-coverage.xml
+    paths:
+      - nuxt/coverage/
+    expire_in: 1 week
+  coverage: '/All files\s*\|\s*([\d.]+)/'
+
+test:scripts:
+  extends: .node
+  stage: test
+  needs: []
+  script:
+    - section_start "scripts" "Testing the tooling"
+    - npm run test:scripts
+    - section_end "scripts"
+
+.playwright:
+  extends: .node
+  image: mcr.microsoft.com/playwright:v1.44.1-jammy
+  variables:
+    PLAYWRIGHT_BASE_URL: http://127.0.0.1:3000
+    VISUAL_RESULTS_DIR: test-results
+  before_script:
+    - !reference [.node, before_script]
+    - node scripts/serve.mjs nuxt/dist 3000 &
+    - sleep 1 && curl -sf http://127.0.0.1:3000/ > /dev/null
+
+# Functional checks against the generated site. Visual comparisons are a
+# separate job, because they need committed baselines to mean anything.
+test:e2e:
+  extends: .playwright
+  stage: test
+  needs: [generate]
+  script:
+    - section_start "e2e" "Running end-to-end tests against the generated site"
+    - npm run test:e2e
+    - section_end "e2e"
+  artifacts:
+    when: on_failure
+    paths:
+      - test-results/
+      - playwright-report/
+    expire_in: 1 week
+
+#
+# --- Visual ---
+#
+# Runs only once baselines are committed. Playwright writes a baseline and
+# passes on the first run of any snapshot assertion, so this job with an empty
+# test/e2e/__snapshots__ would be green while checking nothing. To arm it, run
+# the manual visual:update job and commit the PNGs it produces.
+#
+
+visual:
+  extends: .playwright
+  stage: visual
+  needs: [generate]
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      exists:
+        - test/e2e/__snapshots__/**/*.png
+  script:
+    - section_start "visual" "Comparing against the committed baselines"
+    - npm run test:visual
+    - section_end "visual"
+  after_script:
+    - bash .gitlab/scripts/post-visual-failure-comment.sh || true
+  artifacts:
+    when: always
+    paths:
+      - test-results/
+      - playwright-report/
+    expire_in: 1 week
+
+# Manual baseline regeneration on the shared runner, so every baseline comes
+# from one architecture. A baseline from a developer's machine is a permanent
+# false diff for everyone else.
+visual:update:
+  extends: .playwright
+  stage: visual
+  needs: [generate]
+  rules:
+    - when: manual
+      allow_failure: true
+  script:
+    - section_start "visual-update" "Regenerating visual baselines"
+    - npm run test:visual:update
+    - section_end "visual-update"
+  artifacts:
+    when: always
+    paths:
+      - test/e2e/__snapshots__/
+    expire_in: 1 day
+
+#
+# --- Preview ---
+#
+# Manual. Serves the generated site through a Cloudflare Quick Tunnel and posts
+# the URL to the merge request. The tunnel dies with the job.
+#
+
+preview:live:
+  extends: .node
+  stage: preview
+  needs: [generate]
+  timeout: 1h
+  variables:
+    PREVIEW_DIR: nuxt/dist
+    PREVIEW_KEEP_ALIVE_MINUTES: '55'
+    PREVIEW_LABEL: 'Generated site'
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+      when: manual
+      allow_failure: true
+  script:
+    - section_start "preview-tunnel" "Opening a cloudflared tunnel"
+    - bash .gitlab/scripts/run-live-preview-tunnel.sh
+    - section_end "preview-tunnel"

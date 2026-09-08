@@ -42,21 +42,34 @@
     ],
     "created": [
         {
-            "value": "2022-02-15T00:11:50+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-02-15T00:11:50+00:00"
         }
     ],
     "changed": [
         {
-            "value": "2022-02-15T00:11:50+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-02-15T00:11:50+00:00"
+        }
+    ],
+    "access": [
+        {
+            "value": "1970-01-01T00:00:00+00:00"
+        }
+    ],
+    "login": [
+        {
+            "value": "1970-01-01T00:00:00+00:00"
+        }
+    ],
+    "init": [
+        {
+            "value": "admin@example.com"
         }
     ],
     "roles": [
         {
             "target_id": "administrator",
             "target_type": "user_role",
-            "target_uuid": "a7c510d1-c599-4934-9968-5461ce988ef6"
+            "target_uuid": "dadb3288-a17c-48a2-9d6b-e8a20a5d04a4"
         }
     ],
     "default_langcode": [

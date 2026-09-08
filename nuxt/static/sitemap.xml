@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  A single-page site, so this is a static file rather than a generated one.
+  No lastmod: the page's content comes from Drupal at build time, so any date
+  written here would be a guess that goes stale silently.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://demo.druxtjs.org/</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+</urlset>

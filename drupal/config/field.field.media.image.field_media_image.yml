@@ -1,4 +1,4 @@
-uuid: 25482606-80cc-4e0f-81a5-73f1c375eab2
+uuid: 4921ca58-ba4e-4057-ab0c-49ffea6fc3da
 langcode: en
 status: true
 dependencies:
@@ -11,7 +11,7 @@ dependencies:
     module:
       - media
 _core:
-  default_config_hash: HGRX21ciyn7K-q8KMxsKHQvIB4SHT-A3bqzmNDnGKyc
+  default_config_hash: P7CkVOgjDXiN26Fm2hniNei-XPK3iuZTlcBGqreTbJ0
 id: media.image.field_media_image
 field_name: field_media_image
 entity_type: media
@@ -26,7 +26,7 @@ settings:
   handler: 'default:file'
   handler_settings: {  }
   file_directory: '[date:custom:Y]-[date:custom:m]'
-  file_extensions: 'png gif jpg jpeg'
+  file_extensions: 'png gif jpg jpeg webp'
   max_filesize: ''
   max_resolution: ''
   min_resolution: ''

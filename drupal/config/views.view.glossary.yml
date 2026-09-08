@@ -1,4 +1,4 @@
-uuid: 06ac6219-014d-4084-9ea1-cbab4494f25d
+uuid: 05a557e5-f052-457c-8e18-660e5a9e8434
 langcode: en
 status: false
 dependencies:
@@ -8,7 +8,7 @@ dependencies:
     - node
     - user
 _core:
-  default_config_hash: sz_FoMz5aClG4jFy4UDlkenXQtgTUXohEDjWVBuHaro
+  default_config_hash: msJ3UFBLYSIFO9zalGlk3_7z1reoZ7EHJ4qeRzO5iAE
 id: glossary
 label: Glossary
 module: node
@@ -183,10 +183,20 @@ display:
             date_format: long
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: long
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
       pager:
         type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 36
           total_pages: 0
           id: 0
@@ -239,7 +249,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: a
-          default_argument_skip_url: false
           summary_options: {  }
           summary:
             format: default_summary
@@ -337,6 +346,7 @@ display:
           summary: ''
           order: asc
           empty_table: false
+          class: ''
       row:
         type: fields
         options:
@@ -406,7 +416,6 @@ display:
           default_argument_type: fixed
           default_argument_options:
             argument: a
-          default_argument_skip_url: false
           summary_options:
             items_per_page: 25
             inline: true

@@ -1,0 +1,207 @@
+---
+name: CI
+
+# The same checks as .gitlab-ci.yml. This repository is mirrored, so both
+# hosts have to agree. Nothing on this side lints this file: the GitLab
+# pipeline runs actionlint over it in return. The deploy stays in
+# build-test-deploy.yml.
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+# Least privilege: nothing here writes to the repository.
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      # Actions are pinned to commit SHAs, not tags. A tag is a mutable
+      # reference to code that runs with this repository's credentials.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+          # The attribution and prose checks read the pull request's own
+          # commits, so its base has to be present.
+          fetch-depth: 0
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            nuxt/package-lock.json
+
+      # corepack reads the packageManager field, so the manager the lockfile
+      # was written by is the one that installs it.
+      - run: corepack enable && corepack prepare --activate
+
+      - run: npm ci
+
+      - run: npm --prefix nuxt ci
+
+      - run: npm run lint:js
+
+      - run: npm --prefix nuxt run lint
+
+      - run: npm run lint:format
+
+      - run: npm run lint:md
+
+      - run: npm run lint:cspell
+
+      - run: npm run lint:knip
+
+      # This repository is public. A host only the author can reach must never
+      # reach a tracked file.
+      - run: npm run lint:private
+
+      # The work is the author's. No commit, pull request description or
+      # tracked file may credit an AI tool as author, co-author or generator.
+      - name: Check for AI attribution
+        env:
+          ATTRIBUTION_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          MERGE_REQUEST_DESCRIPTION: ${{ github.event.pull_request.body }}
+        run: bash .gitlab/scripts/check-attribution.sh
+
+      # Project voice over the markdown a change touches, its commit messages
+      # and the pull request description.
+      - name: Lint prose
+        env:
+          PROSE_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+          MERGE_REQUEST_DESCRIPTION: ${{ github.event.pull_request.body }}
+          PROSE_LINT_GLOB: '!drupal/**'
+        run: |
+          bash .gitlab/scripts/install-vale.sh .vale/bin .vale/styles
+          bash .gitlab/scripts/lint-prose.sh
+
+      # Reporting only on this Nuxt 2 tree: the runtime findings sit behind
+      # nuxt, webpack 4 and druxt-site and clear with the Nuxt 3 migration,
+      # not before. The count is in the log.
+      - run: npm run lint:audit
+        continue-on-error: true
+
+  # renovate-config-validator is renovate itself, which needs Node 20 or later,
+  # so it runs apart from the app's Node 16.
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+
+      - run: npx --yes --package renovate renovate-config-validator
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            nuxt/package-lock.json
+
+      - run: corepack enable && corepack prepare --activate
+
+      - run: npm ci
+
+      - run: npm --prefix nuxt ci
+
+      - run: npm run test:scripts
+
+      - run: npm test -- --reporters=default --reporters=jest-junit --runInBand
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: unit-test-results
+          path: |
+            nuxt/reports/junit/junit.xml
+            nuxt/coverage/
+
+  # The backend is provisioned without Docker, from the committed configuration
+  # and Tome content, and the site is generated against it. The generated site
+  # is what the end-to-end checks read, the same as the GitLab pipeline.
+  e2e:
+    # Pinned, not `ubuntu-latest`: Drupal 11 needs SQLite 3.45, which 22.04
+    # does not ship, and a floating label changed release mid-day once.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.4'
+          extensions: pdo_sqlite, gd, intl, zip, opcache
+          tools: composer:2
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            nuxt/package-lock.json
+
+      - run: corepack enable && corepack prepare --activate
+
+      - run: npm ci
+
+      - run: npm --prefix nuxt ci
+
+      - name: Assemble, provision and start the Drupal backend
+        working-directory: drupal
+        env:
+          WEBSERVER_HOST: 127.0.0.1
+          WEBSERVER_PORT: 8888
+        run: |
+          .devtools/assemble
+          .devtools/provision
+          .devtools/start
+
+      - name: Backend answers JSON:API
+        run: . ./.env && curl -sf "${BASE_URL}/jsonapi" | grep -q '"jsonapi"'
+
+      - run: npm run generate
+
+      # The browser only. The hosted image ships Chrome and its shared
+      # libraries, and `--with-deps` on this Playwright asks apt for 22.04
+      # package names that 24.04 has renamed.
+      - run: npx playwright install chromium
+
+      # Visual comparisons are excluded here on purpose: the committed
+      # baselines come from the GitLab runner, and this runner renders
+      # differently. The functional checks run everywhere.
+      - name: End-to-end tests against the generated site
+        run: |
+          node scripts/serve.mjs nuxt/dist 3000 &
+          sleep 1
+          PLAYWRIGHT_BASE_URL=http://127.0.0.1:3000 npm run test:e2e
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: failure()
+        with:
+          name: playwright-results
+          path: |
+            test-results/
+            playwright-report/

@@ -5,10 +5,10 @@ on:
     branches:
       - main
       - develop
+  # Every pull request, whatever it targets. A branch filter here skipped
+  # stacked pull requests entirely, so a change based on another open branch
+  # got no build, no link check and no deploy preview until its base merged.
   pull_request:
-    branches:
-      - main
-      - develop
 
 jobs:
   ci:
@@ -22,25 +22,18 @@ jobs:
     steps:
       - name: Checkout 🛎
         uses: actions/checkout@v4
+        with:
+          # Pull request builds run repository-controlled commands. Without
+          # this the checkout token stays readable to all of them.
+          persist-credentials: false
 
       - name: Setup node env 🏗
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-          check-latest: true
+          cache: npm
+          cache-dependency-path: nuxt/package-lock.json
 
-      - name: Get yarn cache directory path 🛠
-        id: yarn-cache-dir-path
-        run: cd nuxt && echo "dir=$(yarn cache dir)" >> "$GITHUB_OUTPUT"
-
-      - name: Cache node_modules 📦
-        uses: actions/cache@v4
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
       - name: Setup ddev
         uses: ddev/github-action-setup-ddev@v1
         with:
@@ -52,21 +45,25 @@ jobs:
         run: cd drupal && ddev drupal-install
 
       - name: Install Nuxt.js 👨🏻‍💻
-        run: cd nuxt && yarn
+        run: cd nuxt && npm ci
 
       - name: Run linting 🔎
-        run: cd nuxt && yarn lint
+        run: cd nuxt && npm run lint
 
       # @TODO - Add unit tests
       # - name: Run unit tests 🧪
-      #   run: cd nuxt && yarn test:unit
+      #   run: cd nuxt && npm run test:unit
 
       - name: Build dist 👨🏻‍💻
-        run: cd nuxt && yarn generate
+        run: cd nuxt && npm run generate
+        env:
+          # Only main sends hits to the real GA4 property. Deploy previews and
+          # branch builds generate without the gtag snippet at all.
+          ANALYTICS_ENABLED: ${{ github.ref == 'refs/heads/main' }}
 
       # @TODO - Add e2e tests
       # - name: Run end-to-end tests 🧪
-      #   run: cd nuxt && NODE_TLS_REJECT_UNAUTHORIZED=0 yarn test:cy
+      #   run: cd nuxt && NODE_TLS_REJECT_UNAUTHORIZED=0 npm run test:cy
 
       # The demo list is Tome content in drupal/content, so the generated site
       # carries the real outbound links. This site advertised a storybook that
@@ -74,15 +71,10 @@ jobs:
       - name: Check links 🔗
         uses: lycheeverse/lychee-action@v2
         with:
+          # Settings live in .lychee.toml so a local run and this job agree.
           args: >-
-            --no-progress
-            --max-concurrency 4
+            --config .lychee.toml
             --root-dir ${{ github.workspace }}/nuxt/dist
-            --accept 200,206,429
-            --timeout 30
-            --max-retries 3
-            --retry-wait-time 15
-            --exclude-path nuxt/dist/_nuxt
             'nuxt/dist/**/*.html'
           fail: true
           jobSummary: true
@@ -93,7 +85,7 @@ jobs:
           publish-dir: './nuxt/dist'
           production-branch: main
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "chore(ci): deploy from GitHub Actions"
+          deploy-message: 'chore(ci): deploy from GitHub Actions'
           enable-pull-request-comment: true
           enable-commit-comment: true
           overwrites-pull-request-comment: true

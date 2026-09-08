@@ -1,0 +1,12 @@
+# Link checking for the generated site, run by the deploy workflow after
+# `nuxt generate`. The demo list is content, so the generated pages carry the
+# real outbound links; this site advertised a dead storybook for two years
+# before anything checked.
+no_progress = true
+max_concurrency = 4
+accept = [200, 206, 429]
+timeout = 30
+max_retries = 3
+retry_wait_time = 15
+exclude_all_private = true
+exclude_path = ["nuxt/dist/_nuxt"]

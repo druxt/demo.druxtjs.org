@@ -1,8 +1,18 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-## Description: Install Drupal
+## Description: Install the site from the committed configuration and content.
 ## Usage: drupal-install
-## Example: "ddev drupal-install"
+## Example: ddev drupal-install
+
+# The same steps as .devtools/provision, against the DDEV database. See
+# .devtools/import-content.php for why this is not `drush tome:import`.
+set -euo pipefail
 
 composer install
-drush -y tome:install
+drush -y site:install standard
+drush -y pm:enable tome_sync
+drush -y config:set system.site uuid "$(sed -n 's/^uuid: *//p' config/system.site.yml)"
+drush -y config:import
+drush -y cache:rebuild
+drush php:script .devtools/import-content.php
+drush -y cache:rebuild

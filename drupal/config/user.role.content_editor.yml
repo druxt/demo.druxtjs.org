@@ -1,23 +1,19 @@
-uuid: 08b76c18-8802-40a1-ad07-aaeb71341264
+uuid: b0a4f92b-ac87-48ab-9eaa-f19011598215
 langcode: en
 status: true
 dependencies:
   config:
-    - node.type.article
-    - node.type.page
     - taxonomy.vocabulary.tags
   module:
-    - comment
     - contextual
     - file
+    - navigation
     - node
     - path
     - system
     - taxonomy
-    - toolbar
-    - tour
 _core:
-  default_config_hash: Wur9kcEOwY1Jal81NssKnz3RhVJxAvBwyWQBGcA_1Go
+  default_config_hash: og55Zu0F-q-X8zG0Ohrls49zws6IrmmosZS-30Es8vw
 id: content_editor
 label: 'Content editor'
 weight: 2
@@ -27,20 +23,11 @@ permissions:
   - 'access content overview'
   - 'access contextual links'
   - 'access files overview'
-  - 'access toolbar'
-  - 'access tour'
+  - 'access navigation'
   - 'administer url aliases'
-  - 'create article content'
-  - 'create page content'
   - 'create terms in tags'
   - 'create url aliases'
-  - 'delete article revisions'
-  - 'delete own article content'
-  - 'delete own page content'
-  - 'delete page revisions'
-  - 'edit own article content'
-  - 'edit own comments'
-  - 'edit own page content'
+  - 'delete own files'
   - 'edit terms in tags'
   - 'revert all revisions'
   - 'view all revisions'

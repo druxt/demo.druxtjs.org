@@ -13,13 +13,12 @@
         {
             "target_id": "image",
             "target_type": "media_type",
-            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
+            "target_uuid": "dc800171-04a8-44b1-8442-95e7d7782a35"
         }
     ],
     "revision_created": [
         {
-            "value": "2022-09-10T02:25:20+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T02:25:20+00:00"
         }
     ],
     "revision_user": [],
@@ -52,14 +51,12 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T02:25:20+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T02:25:20+00:00"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-10T02:25:20+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-10T02:25:20+00:00"
         }
     ],
     "default_langcode": [

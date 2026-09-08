@@ -1,55 +1,83 @@
+<!-- vale off -->
+<!-- The alt text describes what the banner shows, which is the framework wordmark. -->
+<a href="https://druxtjs.org">
+  <img src=".github/banner.svg" alt="DruxtJS: The Fully Decoupled Drupal Framework">
+</a>
+<!-- vale on -->
+
 # demo.druxtjs.org
 
-> Made with DruxtJS
+[![CI](https://github.com/druxt/demo.druxtjs.org/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/druxt/demo.druxtjs.org/actions/workflows/ci.yml)
+[![Deploy](https://github.com/druxt/demo.druxtjs.org/actions/workflows/build-test-deploy.yml/badge.svg?branch=main)](https://github.com/druxt/demo.druxtjs.org/actions/workflows/build-test-deploy.yml)
 
-This is the source code for https://demo.druxtjs.org.
+The source of [demo.druxtjs.org](https://demo.druxtjs.org): a list of live
+Drupal sites decoupled with Nuxt, each built with [Druxt](https://druxtjs.org)
+from a public repository.
 
+The site is two applications in one repository. `drupal/` is a Drupal backend
+whose configuration and content are committed and imported by
+[Tome](https://www.drupal.org/project/tome). `nuxt/` is a Nuxt front end that
+reads that backend through Druxt at generate time and produces a static site,
+which Netlify serves.
 
-## How to use it
+## Run it locally
 
-Your environment contains a pre-install, pre-configured and running instance of Drupal with Tome, and Nuxt with Druxt.
+You need PHP 8.3 or later with the `pdo_sqlite`, `gd`, `intl` and `zip`
+extensions, Composer, and Node 16. [mise](https://mise.jdx.dev) installs the pinned
+versions from `mise.toml`, and the dev container in `.devcontainer/` has them
+already.
 
-You can access the services in your browser, via the **Remote Explorer** extension, or via the URL pattern: `https://[PORT]-[GITPOD_ID].[GITPOD_SERVER].gitpod.io`
+```sh
+npm install         # tooling, and enables the git hooks
+npm run setup       # installs Drupal, imports the content, starts the backend
+npm run dev         # the Nuxt dev server on http://localhost:3000
+```
 
+`setup` provisions a throwaway SQLite database from `drupal/config` and
+`drupal/content`, starts PHP's built-in server on the first free port from
+8888, and writes its URL to `.env` as `BASE_URL`. The Nuxt side reads that
+file, so nothing is copied between terminals. `npm run stop` stops the
+backend and `npm run info` prints where it is.
 
-## Services
+DDEV still works for the backend: `cd drupal && ddev start && ddev
+drupal-install` installs the same site, and `nuxt/nuxt.config.js` falls back
+to the DDEV URL when no `BASE_URL` is set.
 
-| Port | Service |
-| -- | -- |
-| `3000` | Nuxt.js |
-| `3003` | Storybook |
-| `8080` | Drupal |
+## Commands
 
+| Command                  | What it does                                                    |
+| ------------------------ | --------------------------------------------------------------- |
+| `npm run setup`          | Assemble, provision and start the backend                       |
+| `npm run assemble`       | `composer install` for the backend                              |
+| `npm run provision`      | Install the site from configuration and import the Tome content |
+| `npm run start` / `stop` | Start or stop the PHP built-in server                           |
+| `npm run dev`            | Nuxt dev server against the running backend                     |
+| `npm run generate`       | Generate the static site into `nuxt/dist`                       |
+| `npm run serve`          | Serve `nuxt/dist` on port 3000, as the tests do                 |
+| `npm test`               | Unit tests, with the coverage floor enforced                    |
+| `npm run test:e2e`       | Playwright against the generated site                           |
+| `npm run lint`           | Every linter except prose                                       |
+| `npm run lint:prose`     | Vale, after `npm run lint:prose:install` once                   |
 
-## Tools
+## Content
 
-### DDEV
+The demo list is Drupal content. Add or change a demo in Drupal, then export
+it with `drush tome:export` from `drupal/` and commit the result under
+`drupal/content` and `drupal/config`. The pipeline provisions a fresh site from
+those files on every change, so what is committed is what gets built.
 
-> DDEV is an open source tool that makes it dead simple to get local PHP development environments up and running within minutes. 
+## Deployment
 
-DDEV is used to manage the Drupal instance, and provides a CLI that can be used to run common drupal tasks, including `ddev drush`.
+Pushes to `main` build and deploy to Netlify from
+`.github/workflows/build-test-deploy.yml`. Every pull request gets a Netlify
+deploy preview, posted as a comment. Analytics is only enabled on `main`, so
+previews and local builds never send hits to the production property.
 
-These commands should be run from within the `/drupal` folder.
+## Contributing
 
-Refer to the documentation for more details: https://ddev.readthedocs.io
-
-
-### @nuxtjs/storybook
-
-> Storybook integration with NuxtJS .
-
-Druxt integrates with the Nuxt Storybook module to provide zero-configuration, auto-discovery stories with access to live data from your Drupal backend.
-
-To start Storybook, navigate to the `nuxt` directory and run `npx nuxt storybook`.
-
-
-### Tome sync
-
-Tome sync is a static storage system for content, allowing you to keep your content up to date without the need of a database.
-
-See the project page for more details: https://www.drupal.org/project/tome
-
+See [CONTRIBUTING.md](CONTRIBUTING.md). This repository follows the Druxt
+repository standard, and the git hooks and both pipelines check it.
 
 ## License
 
-[MIT](https://github.com/druxt/druxt.js/blob/develop/LICENSE)
+[MIT](LICENSE)

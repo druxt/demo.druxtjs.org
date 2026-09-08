@@ -18,8 +18,7 @@
     ],
     "revision_timestamp": [
         {
-            "value": "2022-09-07T09:09:41+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-07T09:09:41+00:00"
         }
     ],
     "revision_uid": [
@@ -47,14 +46,12 @@
     ],
     "created": [
         {
-            "value": "2022-09-07T09:06:30+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-07T09:06:30+00:00"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-07T09:11:22+00:00",
-            "format": "Y-m-d\\TH:i:sP"
+            "value": "2022-09-07T09:11:22+00:00"
         }
     ],
     "promote": [
@@ -84,5 +81,6 @@
             "langcode": "en"
         }
     ],
-    "body": []
+    "body": [],
+    "field_items": []
 }
