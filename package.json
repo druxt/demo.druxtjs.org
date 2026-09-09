@@ -41,8 +41,8 @@
     "postinstall": "node scripts/postinstall.mjs"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.8.1",
-    "@commitlint/config-conventional": "17.8.1",
+    "@commitlint/cli": "21.2.2",
+    "@commitlint/config-conventional": "21.2.2",
     "@playwright/test": "1.44.1",
     "cspell": "7.3.9",
     "eslint": "8.28.0",
