@@ -2,8 +2,8 @@
 # Node matches .nvmrc (kept for nvm users) and is what Nuxt 2's webpack 4
 # build runs on. PHP matches drupal/composer.lock, which is Drupal 11.
 [tools]
-node = "16.18.1"
-php = "8.4"
+node = "16.20.2"
+php = "8.5.10"
 
 [tasks.setup]
 description = "Install dependencies, provision Drupal (SQLite, Tome content), start the backend."
