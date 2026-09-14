@@ -1,0 +1,92 @@
+{
+    "uuid": [
+        {
+            "value": "a0a5c08e-f23f-41ac-b572-e08fbb9f0f64"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image",
+            "target_type": "media_type",
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2026-09-14T05:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_user": [],
+    "revision_log_message": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "name": [
+        {
+            "value": "druxtjs-org-frontend.png"
+        }
+    ],
+    "thumbnail": [
+        {
+            "alt": "druxtjs.org documentation site frontend",
+            "title": null,
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "7d30a4c4-214c-460c-8dfd-655c0f86cc3d"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-09-14T05:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-09-14T05:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "field_media_image": [
+        {
+            "alt": "druxtjs.org documentation site frontend",
+            "title": "",
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "7d30a4c4-214c-460c-8dfd-655c0f86cc3d"
+        }
+    ]
+}

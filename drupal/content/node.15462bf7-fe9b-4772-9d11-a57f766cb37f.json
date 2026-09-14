@@ -1,0 +1,108 @@
+{
+    "uuid": [
+        {
+            "value": "15462bf7-fe9b-4772-9d11-a57f766cb37f"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "project",
+            "target_type": "node_type",
+            "target_uuid": "bdd4c867-de7d-447b-b5ba-44a73836e7d9"
+        }
+    ],
+    "revision_timestamp": [
+        {
+            "value": "2026-09-14T05:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "revision_log": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "title": [
+        {
+            "value": "DruxtJS documentation site"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-09-14T05:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-09-14T05:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "promote": [
+        {
+            "value": false
+        }
+    ],
+    "sticky": [
+        {
+            "value": false
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": "",
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "body": [
+        {
+            "value": "<p>The druxtjs.org documentation site is built with Druxt itself. The header, footer and menus are Drupal blocks and menus, every tutorial and how-to page is a Drupal node rendered through the DruxtSite module, and the site also hosts the live component playground.</p>\r\n",
+            "format": "basic_html",
+            "summary": ""
+        }
+    ],
+    "field_items": [
+        {
+            "target_type": "paragraph",
+            "target_uuid": "2d647d77-7532-4ce9-a370-4832354ec382"
+        },
+        {
+            "target_type": "paragraph",
+            "target_uuid": "d5613858-fa05-4aa3-b156-886cef1a7f2f"
+        },
+        {
+            "target_type": "paragraph",
+            "target_uuid": "daccbc25-22ef-4112-873c-0fe63ea40d33"
+        }
+    ]
+}
