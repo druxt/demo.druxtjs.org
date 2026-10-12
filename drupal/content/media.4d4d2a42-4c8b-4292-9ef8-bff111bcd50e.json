@@ -1,0 +1,92 @@
+{
+    "uuid": [
+        {
+            "value": "4d4d2a42-4c8b-4292-9ef8-bff111bcd50e"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image",
+            "target_type": "media_type",
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_user": [],
+    "revision_log_message": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "name": [
+        {
+            "value": "druxtjs-org-authoring.png"
+        }
+    ],
+    "thumbnail": [
+        {
+            "alt": "Draft authoring on druxtjs.org: an in-page visual diff of a workspace draft, with the editor toolbar",
+            "title": null,
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "25a66fa5-7f54-4c50-a5f8-bc9461d42a99"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "field_media_image": [
+        {
+            "alt": "Draft authoring on druxtjs.org: an in-page visual diff of a workspace draft, with the editor toolbar",
+            "title": "",
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "25a66fa5-7f54-4c50-a5f8-bc9461d42a99"
+        }
+    ]
+}
