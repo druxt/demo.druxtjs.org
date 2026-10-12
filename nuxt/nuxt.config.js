@@ -1,5 +1,8 @@
 import fs from 'fs'
 import path from 'path'
+// Shared with the generated text files, so the name and the description
+// cannot change in one and miss the other.
+import { site } from './lib/site'
 
 // BASE_URL from the environment, else from the repository-root .env that
 // drupal/.devtools/start writes, else the DDEV project URL. A developer never
@@ -39,12 +42,13 @@ if (!/^G-[A-Z0-9]+$/.test(GA_MEASUREMENT_ID)) {
 // local builds never send hits into the real property.
 const analyticsEnabled = process.env.ANALYTICS_ENABLED === 'true'
 
-const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://demo.druxtjs.org'
-const SITE_NAME = 'DruxtJS'
-const SITE_TITLE = 'Decoupled Drupal demos - DruxtJS'
-const SITE_DESCRIPTION =
-  'Live demos of decoupled Drupal: a Drupal backend serving JSON:API and a Nuxt frontend rendering it with Druxt. Each one is open source and runs from a public repository you can read, fork and run yourself.'
-const TWITTER_HANDLE = '@DruxtJS'
+const {
+  SITE_ORIGIN,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  TWITTER_HANDLE,
+} = site
 const OG_IMAGE = SITE_ORIGIN + '/og-druxt.png'
 
 export default {
@@ -145,6 +149,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '~/modules/seo-files',
     '@nuxtjs/eslint-module',
     '@nuxt/postcss8',
     ['@nuxt/image', { domains: [baseUrl] }],
@@ -166,41 +171,4 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
-
-  hooks: {
-    /**
-     * Writes the llms.txt pair beside the generated site.
-     *
-     * The demo list is Tome content, so these are built from the same files
-     * the build imports rather than by crawling the output: a link that never
-     * rendered cannot end up described here.
-     *
-     * @param {object} generator - The Nuxt generator.
-     */
-    async 'generate:done'(generator) {
-      const fs = require('fs')
-      const path = require('path')
-      const { readDemos } = require('./lib/demos')
-      const { buildLlmsTxt, buildLlmsFullTxt } = require('./lib/llms-txt')
-
-      const site = { SITE_ORIGIN, SITE_NAME, SITE_DESCRIPTION }
-      const content = path.join(__dirname, '..', 'drupal', 'content')
-      const demos = readDemos(content)
-      const dir = generator.nuxt.options.generate.dir
-
-      await fs.promises.writeFile(
-        path.join(dir, 'llms.txt'),
-        buildLlmsTxt(demos, site)
-      )
-      await fs.promises.writeFile(
-        path.join(dir, 'llms-full.txt'),
-        buildLlmsFullTxt(demos, site)
-      )
-
-      const links = demos.reduce((n, demo) => n + demo.links.length, 0)
-      console.log(
-        `SEO: wrote llms.txt and llms-full.txt for ${demos.length} demos, ${links} links`
-      )
-    },
-  },
 }

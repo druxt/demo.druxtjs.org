@@ -1,15 +1,21 @@
 /**
- * Reads the demo projects out of the Tome export.
+ * The demo projects as documents, read from Drupal's JSON:API at build time
+ * for llms.txt and llms-full.txt.
  *
- * The build imports `drupal/content` into Drupal and the pages then read
- * JSON:API, so the same files are the honest source for the text files the
- * build writes beside them. Reading them directly keeps this pure and needs
- * no running backend.
+ * This site is a demonstration of Druxt rendering Drupal over JSON:API, so
+ * the files it publishes about itself come through that same path. The Tome
+ * export seeds the database and is not a source the frontend reads.
+ *
+ * Pure over the fetched data, so the shaping can be tested without Drupal.
  */
-const fs = require('fs')
-const path = require('path')
 
-/** The entities a body field actually produces. */
+/** Published projects, in the order the Projects view uses: title ascending. */
+const COLLECTION = {
+  path: '/jsonapi/node/project',
+  query: 'filter[status]=1&sort=title&include=field_items',
+}
+
+/** The entities a body field produces, decoded in one pass. */
 const ENTITIES = {
   amp: '&',
   lt: '<',
@@ -46,33 +52,58 @@ const toText = (html) =>
     .trim()
 
 /**
- * Collects every published project, in the view's order: title ascending.
+ * The resources a relationship points at, resolved against `included`.
  *
- * @param {string} dir - The Tome content directory.
- * @returns {object[]} Projects, each with a title, summary and links.
+ * @param {object} resource - The resource holding the relationship.
+ * @param {string} name - The relationship's field name.
+ * @param {object[]} included - The response's included resources.
+ * @returns {object[]} The referenced resources, in order.
  */
-const readDemos = (dir) => {
-  const read = (name) =>
-    JSON.parse(fs.readFileSync(path.join(dir, name), 'utf8'))
-  const names = fs.readdirSync(dir)
-
-  return names
-    .filter((name) => name.startsWith('node.'))
-    .map(read)
-    .filter((node) => node.status && node.status[0] && node.status[0].value)
-    .map((node) => ({
-      title: node.title[0].value,
-      summary: toText((node.body && node.body[0] && node.body[0].value) || ''),
-      links: (node.field_items || [])
-        .map((item) => {
-          const file = `paragraph.${item.target_uuid}.json`
-          if (!names.includes(file)) return null
-          const link = (read(file).field_link || [])[0]
-          return link ? { title: link.title, uri: link.uri } : null
-        })
-        .filter(Boolean),
-    }))
-    .sort((a, b) => a.title.localeCompare(b.title))
+const related = (resource, name, included) => {
+  const data = ((resource.relationships || {})[name] || {}).data
+  return []
+    .concat(data || [])
+    .map((ref) => included.find((r) => r.id === ref.id && r.type === ref.type))
+    .filter(Boolean)
 }
 
-module.exports = { readDemos, toText }
+/**
+ * One project resource as a document.
+ *
+ * @param {object} resource - A project node.
+ * @param {object[]} included - The response's included resources.
+ * @returns {object} `{ title, summary, links }`.
+ */
+const documentOf = (resource, included = []) => {
+  const a = resource.attributes || {}
+  const body = a.body || {}
+  return {
+    title: a.title,
+    summary: toText(body.processed || body.value || ''),
+    links: related(resource, 'field_items', included)
+      .map((item) => (item.attributes || {}).field_link)
+      .filter((link) => link && link.uri)
+      .map((link) => ({ title: link.title, uri: link.uri })),
+  }
+}
+
+/**
+ * Every published project, following the collection's pages.
+ *
+ * @param {string} baseUrl - Drupal's origin.
+ * @param {function} get - `async (url) => data`: a JSON:API GET.
+ * @returns {Promise<object[]>} Documents from documentOf().
+ */
+async function readDemos(baseUrl, get) {
+  const demos = []
+  let url = `${baseUrl}${COLLECTION.path}?${COLLECTION.query}&page[limit]=50`
+  while (url) {
+    const data = await get(url)
+    for (const resource of data.data || [])
+      demos.push(documentOf(resource, data.included))
+    url = ((data.links || {}).next || {}).href || null
+  }
+  return demos
+}
+
+module.exports = { COLLECTION, toText, related, documentOf, readDemos }
