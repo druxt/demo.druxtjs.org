@@ -24,11 +24,18 @@ const demos = [
 ]
 
 describe('llms.txt', () => {
-  test('tags a bare URL, and leaves one that already has a query alone', () => {
+  test('tags a bare URL, and keeps a query and fragment it already has', () => {
     expect(withUtm('https://example.com/a')).toContain('?utm_source=llms-txt')
     expect(withUtm('https://example.com/a?b=1')).toBe(
-      'https://example.com/a?b=1'
+      'https://example.com/a?b=1&utm_source=llms-txt&utm_medium=ai&utm_campaign=syndication'
     )
+    expect(withUtm('https://example.com/a#frag')).toBe(
+      'https://example.com/a?utm_source=llms-txt&utm_medium=ai&utm_campaign=syndication#frag'
+    )
+  })
+
+  test('leaves a string it cannot parse exactly as written', () => {
+    expect(withUtm('not a url')).toBe('not a url')
   })
 
   test('opens with the heading and the summary blockquote', () => {

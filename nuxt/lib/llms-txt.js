@@ -9,10 +9,34 @@
  */
 
 /** UTM params identifying assistant-sourced clicks. */
-const UTM = 'utm_source=llms-txt&utm_medium=ai&utm_campaign=syndication'
+const UTM = {
+  utm_source: 'llms-txt',
+  utm_medium: 'ai',
+  utm_campaign: 'syndication',
+}
 
-/** Appends the tracking params to a URL that has no query string of its own. */
-const withUtm = (url) => (url.includes('?') ? url : url + '?' + UTM)
+/**
+ * Adds the tracking params to a URL's query.
+ *
+ * Any query the URL already has is kept, and the fragment stays after the
+ * query where a browser expects it. Appending the params as a string instead
+ * dropped them from a URL that already had a query, and put them inside the
+ * fragment on a URL that had one.
+ *
+ * @param {string} url - An absolute URL.
+ * @returns {string} The URL with the tracking params in its query.
+ */
+const withUtm = (url) => {
+  try {
+    const parsed = new URL(url)
+    for (const [key, value] of Object.entries(UTM))
+      parsed.searchParams.set(key, value)
+    return parsed.href
+  } catch (e) {
+    // Not a URL this can parse, so leave it exactly as the editor wrote it.
+    return url
+  }
+}
 
 /** One `- [name](url): notes` list item. */
 const item = (title, url, notes) =>
