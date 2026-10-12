@@ -97,6 +97,32 @@ for (const nf of files.filter((f) => f.startsWith('node.'))) {
   }
 }
 
+// Tome's dependency graph, which orders the import. An entity missing from it
+// is created before the thing it points at, and the import dies with
+// `No "paragraph" entity found with UUID ... for field "0"`.
+const indexPath = path.join(CONTENT, 'meta', 'index.json')
+if (!fs.existsSync(indexPath)) {
+  fail.push('drupal/content/meta/index.json is missing')
+} else {
+  const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'))
+  const named = new Set(Object.keys(index))
+  const onDisk = new Set(files.map((f) => f.replace(/\.json$/, '')))
+
+  for (const name of onDisk) if (!named.has(name)) fail.push(`meta/index.json does not list ${name}`)
+  for (const name of named) if (!onDisk.has(name)) fail.push(`meta/index.json lists ${name}, which is not on disk`)
+  for (const [name, deps] of Object.entries(index)) {
+    for (const dep of deps) if (!named.has(dep)) fail.push(`meta/index.json: ${name} depends on ${dep}, which it does not list`)
+  }
+
+  // Every entity must come after everything it depends on.
+  const created = new Set()
+  for (const [name, deps] of Object.entries(index)) {
+    const early = deps.filter((dep) => !created.has(dep))
+    if (early.length) fail.push(`meta/index.json: ${name} is listed before ${early.join(', ')}`)
+    created.add(name)
+  }
+}
+
 const orphans = files.filter((f) => /^(paragraph|media|file)\./.test(f) && !reached.has(uuidOf(f)))
 orphans.forEach((o) => warn.push(`orphan, not reachable from a published node: ${o}`))
 
