@@ -1,0 +1,10 @@
+# The llms.txt that describes every page, as llmstxt.org v2 discovers it. Sent
+# as a header as well as a <link>, so a non-HTML response carries it too.
+/*
+  Link: </llms.txt>; rel="describedby"; type="text/markdown"
+
+/llms.txt
+  Content-Type: text/markdown; charset=utf-8
+
+/llms-full.txt
+  Content-Type: text/markdown; charset=utf-8
