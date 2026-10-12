@@ -41,9 +41,9 @@ const analyticsEnabled = process.env.ANALYTICS_ENABLED === 'true'
 
 const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://demo.druxtjs.org'
 const SITE_NAME = 'DruxtJS'
-const SITE_TITLE = 'DruxtJS demos'
+const SITE_TITLE = 'Decoupled Drupal demos - DruxtJS'
 const SITE_DESCRIPTION =
-  'Live demos of Drupal sites decoupled with Nuxt, each a working backend and Druxt frontend deployed from a public repository you can read, fork and run yourself.'
+  'Live demos of decoupled Drupal: a Drupal backend serving JSON:API and a Nuxt frontend rendering it with Druxt. Each one is open source and runs from a public repository you can read, fork and run yourself.'
 const TWITTER_HANDLE = '@DruxtJS'
 const OG_IMAGE = SITE_ORIGIN + '/og-druxt.png'
 

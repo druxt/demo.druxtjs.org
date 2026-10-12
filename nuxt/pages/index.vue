@@ -41,12 +41,12 @@
             class="mb-4 text-3xl font-bold leading-tight tracking-tight sm:text-5xl"
           >
             Real Drupal sites,<br />decoupled with
-            <span class="text-brand-green">Nuxt</span>
+            <span class="text-brand-green">Druxt</span>
           </h1>
           <p class="mx-auto mb-8 max-w-xl text-lg text-ink-muted">
-            Every demo below is a working Drupal backend and a Druxt frontend,
-            deployed from a public repository you can read, fork and run
-            yourself.
+            Every demo below is a working Drupal backend serving JSON:API and a
+            Nuxt frontend that renders it, deployed from a public repository you
+            can read, fork and run yourself.
           </p>
           <a
             class="inline-flex items-center rounded-md bg-brand-green px-6 py-3 font-semibold text-ink-deep hover:bg-brand-green-hi"

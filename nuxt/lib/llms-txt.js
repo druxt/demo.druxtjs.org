@@ -31,7 +31,7 @@ const buildLlmsTxt = (demos, site) => {
     '',
     `> ${site.SITE_DESCRIPTION}`,
     '',
-    'Every demo is a Drupal backend serving JSON:API and a Nuxt frontend rendering it with Druxt. Each one runs from a public repository, so the code behind any screen here can be read and run.',
+    'Decoupled Drupal, end to end: a Drupal backend serving JSON:API and a Nuxt frontend rendering it with Druxt, which maps Drupal entities, view modes, views and menus onto Vue components. Each demo runs from a public repository, so the code behind any screen here can be read and run.',
     '',
   ]
 
