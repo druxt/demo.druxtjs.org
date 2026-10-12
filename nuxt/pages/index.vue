@@ -105,6 +105,7 @@
                 <div class="aspect-[16/10] overflow-hidden bg-ink-shot">
                   <NuxtImg
                     v-if="imageOf(entity)"
+                    :alt="altOf(entity)"
                     class="h-full w-full object-cover object-top opacity-90 group-hover:opacity-100"
                     height="400"
                     loading="lazy"
@@ -156,6 +157,7 @@
                   <div class="aspect-[16/10] overflow-hidden bg-ink-shot">
                     <NuxtImg
                       v-if="imageOf(entity)"
+                      :alt="altOf(entity)"
                       class="h-full w-full object-cover object-top opacity-90 group-hover:opacity-100"
                       height="180"
                       loading="lazy"
@@ -243,6 +245,20 @@ export default {
     // shifted whenever a paragraph carried a different number of includes.
     imageOf(entity) {
       return (entity.included || []).find((item) => item.type === 'file--file')
+    },
+
+    // The alt text an editor wrote, which JSON:API carries on the media's
+    // image relationship rather than on the file. Empty when it is missing,
+    // which scripts/check-content.mjs fails the build for.
+    altOf(entity) {
+      const media = (entity.included || []).find((item) =>
+        String(item.type).startsWith('media--')
+      )
+      const image =
+        media && media.relationships && media.relationships.field_media_image
+      return (
+        (image && image.data && image.data.meta && image.data.meta.alt) || ''
+      )
     },
 
     // JSON:API returns the file URI as a root-relative path; resolve it
