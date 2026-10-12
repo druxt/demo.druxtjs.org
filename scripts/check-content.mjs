@@ -30,15 +30,22 @@ const uuidOf = (f) => f.split('.')[1]
 /** Reads intrinsic dimensions so a claimed width/height can be checked. */
 const probe = (abs) => {
   const b = fs.readFileSync(abs)
-  if (b.slice(1, 4).toString() === 'PNG') return { w: b.readUInt32BE(16), h: b.readUInt32BE(20), kind: 'png' }
+  if (b.slice(1, 4).toString() === 'PNG')
+    return { w: b.readUInt32BE(16), h: b.readUInt32BE(20), kind: 'png' }
   if (b.slice(0, 4).toString() === 'RIFF' && b.slice(8, 12).toString() === 'WEBP') {
     const c = b.slice(12, 16).toString()
-    if (c === 'VP8X') return { w: (b.readUIntLE(24, 3) & 0xffffff) + 1, h: (b.readUIntLE(27, 3) & 0xffffff) + 1, kind: 'webp' }
+    if (c === 'VP8X')
+      return {
+        w: (b.readUIntLE(24, 3) & 0xffffff) + 1,
+        h: (b.readUIntLE(27, 3) & 0xffffff) + 1,
+        kind: 'webp',
+      }
     if (c === 'VP8L') {
       const n = b.readUInt32LE(21)
       return { w: (n & 0x3fff) + 1, h: ((n >> 14) & 0x3fff) + 1, kind: 'webp' }
     }
-    if (c === 'VP8 ') return { w: b.readUInt16LE(26) & 0x3fff, h: b.readUInt16LE(28) & 0x3fff, kind: 'webp' }
+    if (c === 'VP8 ')
+      return { w: b.readUInt16LE(26) & 0x3fff, h: b.readUInt16LE(28) & 0x3fff, kind: 'webp' }
   }
   return null
 }
@@ -56,7 +63,10 @@ for (const nf of files.filter((f) => f.startsWith('node.'))) {
 
   for (const item of node.field_items || []) {
     const pf = `paragraph.${item.target_uuid}.json`
-    if (!has(pf)) { fail.push(`${title}: missing ${pf}`); continue }
+    if (!has(pf)) {
+      fail.push(`${title}: missing ${pf}`)
+      continue
+    }
     reached.add(item.target_uuid)
     const para = read(pf)
 
@@ -67,32 +77,53 @@ for (const nf of files.filter((f) => f.startsWith('node.'))) {
 
     for (const m of para.field_media || []) {
       const mf = `media.${m.target_uuid}.json`
-      if (!has(mf)) { fail.push(`${title} / ${link?.title}: missing ${mf}`); continue }
+      if (!has(mf)) {
+        fail.push(`${title} / ${link?.title}: missing ${mf}`)
+        continue
+      }
       reached.add(m.target_uuid)
       const media = read(mf)
       const image = media.field_media_image?.[0]
-      if (!image) { fail.push(`${title} / ${link?.title}: media has no image`); continue }
+      if (!image) {
+        fail.push(`${title} / ${link?.title}: media has no image`)
+        continue
+      }
       if (!(image.alt || '').trim()) fail.push(`${title} / ${link?.title}: image has no alt text`)
 
       const ff = `file.${image.target_uuid}.json`
-      if (!has(ff)) { fail.push(`${title} / ${link?.title}: missing ${ff}`); continue }
+      if (!has(ff)) {
+        fail.push(`${title} / ${link?.title}: missing ${ff}`)
+        continue
+      }
       reached.add(image.target_uuid)
       const file = read(ff)
       const rel = file.uri[0].value.replace('public://', '')
       const abs = path.join(PUBLIC, rel)
-      if (!fs.existsSync(abs)) { fail.push(`${title} / ${link?.title}: ${rel} is not on disk`); continue }
+      if (!fs.existsSync(abs)) {
+        fail.push(`${title} / ${link?.title}: ${rel} is not on disk`)
+        continue
+      }
 
       const size = fs.statSync(abs).size
-      if (file.filesize[0].value !== size) fail.push(`${title} / ${link?.title}: ${rel} is ${size} bytes, entity says ${file.filesize[0].value}`)
+      if (file.filesize[0].value !== size)
+        fail.push(
+          `${title} / ${link?.title}: ${rel} is ${size} bytes, entity says ${file.filesize[0].value}`
+        )
 
       const real = probe(abs)
       if (!real) warn.push(`${title} / ${link?.title}: ${rel} dimensions not readable`)
       else if (real.w !== image.width || real.h !== image.height) {
-        fail.push(`${title} / ${link?.title}: ${rel} is ${real.w}x${real.h}, entity says ${image.width}x${image.height}`)
+        fail.push(
+          `${title} / ${link?.title}: ${rel} is ${real.w}x${real.h}, entity says ${image.width}x${image.height}`
+        )
       }
       const mime = file.filemime[0].value
-      if (real && !mime.endsWith(real.kind)) fail.push(`${title} / ${link?.title}: ${rel} is ${real.kind}, entity says ${mime}`)
-      if (size > 400 * 1024) warn.push(`${title} / ${link?.title}: ${rel} is ${(size / 1024).toFixed(0)}KB, over the 400KB tile budget`)
+      if (real && !mime.endsWith(real.kind))
+        fail.push(`${title} / ${link?.title}: ${rel} is ${real.kind}, entity says ${mime}`)
+      if (size > 400 * 1024)
+        warn.push(
+          `${title} / ${link?.title}: ${rel} is ${(size / 1024).toFixed(0)}KB, over the 400KB tile budget`
+        )
     }
   }
 }
@@ -108,10 +139,14 @@ if (!fs.existsSync(indexPath)) {
   const named = new Set(Object.keys(index))
   const onDisk = new Set(files.map((f) => f.replace(/\.json$/, '')))
 
-  for (const name of onDisk) if (!named.has(name)) fail.push(`meta/index.json does not list ${name}`)
-  for (const name of named) if (!onDisk.has(name)) fail.push(`meta/index.json lists ${name}, which is not on disk`)
+  for (const name of onDisk)
+    if (!named.has(name)) fail.push(`meta/index.json does not list ${name}`)
+  for (const name of named)
+    if (!onDisk.has(name)) fail.push(`meta/index.json lists ${name}, which is not on disk`)
   for (const [name, deps] of Object.entries(index)) {
-    for (const dep of deps) if (!named.has(dep)) fail.push(`meta/index.json: ${name} depends on ${dep}, which it does not list`)
+    for (const dep of deps)
+      if (!named.has(dep))
+        fail.push(`meta/index.json: ${name} depends on ${dep}, which it does not list`)
   }
 
   // Every entity must come after everything it depends on.
@@ -136,7 +171,8 @@ if (checkLinks) {
       const ctrl = new AbortController()
       const t = setTimeout(() => ctrl.abort(), 20000)
       let res = await fetch(uri, { method: 'HEAD', redirect: 'follow', signal: ctrl.signal })
-      if (res.status === 405 || res.status === 501) res = await fetch(uri, { redirect: 'follow', signal: ctrl.signal })
+      if (res.status === 405 || res.status === 501)
+        res = await fetch(uri, { redirect: 'follow', signal: ctrl.signal })
       clearTimeout(t)
       status = res.status
     } catch (e) {
@@ -148,8 +184,13 @@ if (checkLinks) {
   }
 }
 
-console.log(`\nchecked ${files.filter((f) => f.startsWith('node.')).length} nodes, ${links.length} tiles${checkLinks ? ', links resolved' : ', links not checked (pass --links)'}`)
+console.log(
+  `\nchecked ${files.filter((f) => f.startsWith('node.')).length} nodes, ${links.length} tiles${checkLinks ? ', links resolved' : ', links not checked (pass --links)'}`
+)
 warn.forEach((w) => console.log(`WARN  ${w}`))
 fail.forEach((f) => console.log(`FAIL  ${f}`))
-if (fail.length) { console.log(`\n${fail.length} failure(s)`); process.exit(1) }
+if (fail.length) {
+  console.log(`\n${fail.length} failure(s)`)
+  process.exit(1)
+}
 console.log(warn.length ? `\n${warn.length} warning(s), no failures` : '\nno problems')
