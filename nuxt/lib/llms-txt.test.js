@@ -1,6 +1,6 @@
 /* global describe, expect, test */
 
-import { readDemos } from './demos'
+import { readDemos, toText } from './demos'
 import { buildLlmsTxt, buildLlmsFullTxt, withUtm } from './llms-txt'
 
 const site = {
@@ -51,6 +51,19 @@ describe('llms.txt', () => {
     expect(out).toContain('Source: https://demo.druxtjs.org/')
     expect(out).toContain('- Umami Go: https://umami.demo.druxtjs.org/play')
     expect(out).not.toContain('utm_source')
+  })
+})
+
+describe('toText', () => {
+  test('decodes entities in one pass, so a double escape survives', () => {
+    expect(toText('&amp;lt;script&amp;gt;')).toBe('&lt;script&gt;')
+    expect(toText('&amp;amp;')).toBe('&amp;')
+  })
+
+  test('decodes the entities a body field produces, and leaves the rest', () => {
+    expect(toText('<p>Drupal&#8217;s own</p>')).toBe('Drupal\u2019s own')
+    expect(toText('&lt;b&gt;bold&lt;/b&gt;')).toBe('<b>bold</b>')
+    expect(toText('&unknown; stays')).toBe('&unknown; stays')
   })
 })
 

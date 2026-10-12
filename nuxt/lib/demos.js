@@ -9,14 +9,39 @@
 const fs = require('fs')
 const path = require('path')
 
-/** Strips tags and collapses whitespace, so body HTML reads as one line. */
+/** The entities a body field actually produces. */
+const ENTITIES = {
+  amp: '&',
+  lt: '<',
+  gt: '>',
+  quot: '"',
+  apos: "'",
+  nbsp: ' ',
+  '#39': "'",
+  '#8217': '’',
+  rsquo: '’',
+  lsquo: '‘',
+  ldquo: '“',
+  rdquo: '”',
+}
+
+/**
+ * Strips tags and collapses whitespace, so body HTML reads as one line.
+ *
+ * Entities are decoded in a single pass. Decoding them one after another
+ * double-unescapes: `&amp;lt;` would become `&lt;` and then `<`.
+ *
+ * @param {string} html - A body field's value.
+ * @returns {string} The text, on one line.
+ */
 const toText = (html) =>
   String(html || '')
     .replace(/<[^>]+>/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&#8217;|&rsquo;/g, '’')
+    .replace(/&(#?\w+);/g, (match, name) =>
+      Object.prototype.hasOwnProperty.call(ENTITIES, name)
+        ? ENTITIES[name]
+        : match
+    )
     .replace(/\s+/g, ' ')
     .trim()
 
