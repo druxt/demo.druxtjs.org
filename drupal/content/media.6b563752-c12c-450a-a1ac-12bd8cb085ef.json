@@ -1,0 +1,92 @@
+{
+    "uuid": [
+        {
+            "value": "6b563752-c12c-450a-a1ac-12bd8cb085ef"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image",
+            "target_type": "media_type",
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_user": [],
+    "revision_log_message": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "name": [
+        {
+            "value": "umami-entity-explorer.webp"
+        }
+    ],
+    "thumbnail": [
+        {
+            "alt": "Entity Explorer, showing a Drupal entity and the JSON:API request behind it",
+            "title": null,
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "0ac5b681-8c74-48c6-a4f7-0e5712f8b946"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "field_media_image": [
+        {
+            "alt": "Entity Explorer, showing a Drupal entity and the JSON:API request behind it",
+            "title": "",
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "0ac5b681-8c74-48c6-a4f7-0e5712f8b946"
+        }
+    ]
+}

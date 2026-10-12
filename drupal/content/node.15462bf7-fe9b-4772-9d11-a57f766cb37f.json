@@ -18,7 +18,7 @@
     ],
     "revision_timestamp": [
         {
-            "value": "2026-09-14T05:00:00+00:00",
+            "value": "2026-10-12T00:00:00+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -53,7 +53,7 @@
     ],
     "changed": [
         {
-            "value": "2026-09-14T05:00:00+00:00",
+            "value": "2026-10-12T00:00:00+00:00",
             "format": "Y-m-d\\TH:i:sP"
         }
     ],
@@ -92,6 +92,10 @@
         }
     ],
     "field_items": [
+        {
+            "target_type": "paragraph",
+            "target_uuid": "5fb8bbe8-57c0-4b70-93f0-2754775e8a32"
+        },
         {
             "target_type": "paragraph",
             "target_uuid": "2d647d77-7532-4ce9-a370-4832354ec382"

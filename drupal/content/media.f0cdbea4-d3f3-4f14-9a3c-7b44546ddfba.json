@@ -1,7 +1,7 @@
 {
     "uuid": [
         {
-            "value": "c3c0fcea-3e8b-406b-8132-30fe1a87e329"
+            "value": "f0cdbea4-d3f3-4f14-9a3c-7b44546ddfba"
         }
     ],
     "langcode": [
@@ -13,12 +13,13 @@
         {
             "target_id": "image",
             "target_type": "media_type",
-            "target_uuid": "dc800171-04a8-44b1-8442-95e7d7782a35"
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
         }
     ],
     "revision_created": [
         {
-            "value": "2022-09-10T02:25:20+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "revision_user": [],
@@ -36,27 +37,29 @@
     ],
     "name": [
         {
-            "value": "druxtjs-org-demo-umami-github.png"
+            "value": "druxtjs-org-playground.png"
         }
     ],
     "thumbnail": [
         {
-            "alt": "Umami food magazine Druxt demo source code",
+            "alt": "The druxtjs.org live component playground",
             "title": null,
-            "width": 3200,
-            "height": 1802,
+            "width": 2560,
+            "height": 1440,
             "target_type": "file",
-            "target_uuid": "1b4260b9-34ca-4083-a03f-76d81138bfc8"
+            "target_uuid": "8459ff80-50f6-4ba3-8d5a-a69029ad0e60"
         }
     ],
     "created": [
         {
-            "value": "2022-09-10T02:25:20+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-10T02:25:20+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "default_langcode": [
@@ -78,12 +81,12 @@
     ],
     "field_media_image": [
         {
-            "alt": "Umami food magazine Druxt demo source code",
+            "alt": "The druxtjs.org live component playground",
             "title": "",
-            "width": 3200,
-            "height": 1802,
+            "width": 2560,
+            "height": 1440,
             "target_type": "file",
-            "target_uuid": "1b4260b9-34ca-4083-a03f-76d81138bfc8"
+            "target_uuid": "8459ff80-50f6-4ba3-8d5a-a69029ad0e60"
         }
     ]
 }

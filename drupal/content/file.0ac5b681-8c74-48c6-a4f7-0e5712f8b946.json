@@ -1,7 +1,7 @@
 {
     "uuid": [
         {
-            "value": "bc72647b-5e0d-41d3-bf80-ca47797aa60c"
+            "value": "0ac5b681-8c74-48c6-a4f7-0e5712f8b946"
         }
     ],
     "langcode": [
@@ -17,23 +17,22 @@
     ],
     "filename": [
         {
-            "value": "druxtjs-org-demo-umami-frontend.png"
+            "value": "umami-entity-explorer.webp"
         }
     ],
     "uri": [
         {
-            "value": "public:\/\/2022-09\/druxtjs-org-demo-umami-frontend.png",
-            "url": "\/sites\/default\/files\/2022-09\/druxtjs-org-demo-umami-frontend.png"
+            "value": "public://2026-10/umami-entity-explorer.webp"
         }
     ],
     "filemime": [
         {
-            "value": "image\/png"
+            "value": "image/webp"
         }
     ],
     "filesize": [
         {
-            "value": 6308234
+            "value": 102604
         }
     ],
     "status": [
@@ -43,12 +42,14 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T01:46:02+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-10T01:46:24+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ]
 }

@@ -1,7 +1,7 @@
 {
     "uuid": [
         {
-            "value": "2c588f6b-cb08-4430-8d46-b98ceba259da"
+            "value": "f5c6f7fd-0849-4f83-8d1c-2c4265a9ff82"
         }
     ],
     "langcode": [
@@ -17,23 +17,22 @@
     ],
     "filename": [
         {
-            "value": "druxtjs-org-demo-umami-backend.png"
+            "value": "umami-github.png"
         }
     ],
     "uri": [
         {
-            "value": "public:\/\/2022-09\/druxtjs-org-demo-umami-backend.png",
-            "url": "\/sites\/default\/files\/2022-09\/druxtjs-org-demo-umami-backend.png"
+            "value": "public://2026-10/umami-github.png"
         }
     ],
     "filemime": [
         {
-            "value": "image\/png"
+            "value": "image/png"
         }
     ],
     "filesize": [
         {
-            "value": 466236
+            "value": 110992
         }
     ],
     "status": [
@@ -43,12 +42,14 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T02:16:23+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-10T02:16:43+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ]
 }

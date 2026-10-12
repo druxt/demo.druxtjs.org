@@ -1,7 +1,7 @@
 {
     "uuid": [
         {
-            "value": "fc39b443-51cd-43c7-97cd-ecfa6d3cc4b9"
+            "value": "3a569999-fb87-4cf1-85e7-a23a1eb975f9"
         }
     ],
     "langcode": [
@@ -17,23 +17,22 @@
     ],
     "filename": [
         {
-            "value": "druxtjs-org-demo-umami-storybook.png"
+            "value": "umami-storybook.png"
         }
     ],
     "uri": [
         {
-            "value": "public:\/\/2022-09\/druxtjs-org-demo-umami-storybook.png",
-            "url": "\/sites\/default\/files\/2022-09\/druxtjs-org-demo-umami-storybook.png"
+            "value": "public://2026-10/umami-storybook.png"
         }
     ],
     "filemime": [
         {
-            "value": "image\/png"
+            "value": "image/png"
         }
     ],
     "filesize": [
         {
-            "value": 1796957
+            "value": 86682
         }
     ],
     "status": [
@@ -43,12 +42,14 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T02:23:39+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-10T02:25:01+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ]
 }
