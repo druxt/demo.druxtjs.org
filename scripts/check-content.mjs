@@ -12,6 +12,8 @@
  *   node scripts/check-content.mjs --links    # also resolve every outbound link
  */
 import fs from 'node:fs'
+import http from 'node:http'
+import https from 'node:https'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -27,27 +29,105 @@ const files = fs.readdirSync(CONTENT).filter((f) => f.endsWith('.json'))
 const has = (f) => files.includes(f)
 const uuidOf = (f) => f.split('.')[1]
 
-/** Reads intrinsic dimensions so a claimed width/height can be checked. */
+/**
+ * Reads intrinsic dimensions so a claimed width and height can be checked.
+ *
+ * Covers every format the image field accepts (png gif jpg jpeg webp), because
+ * an unreadable image fails below: a format this could not read would
+ * otherwise pass unchecked.
+ *
+ * @param {string} abs - Absolute path to the image.
+ * @returns {?object} `{w, h, kind}`, or null when the bytes are not an image.
+ */
 const probe = (abs) => {
   const b = fs.readFileSync(abs)
-  if (b.slice(1, 4).toString() === 'PNG')
+
+  if (b.length > 24 && b.slice(1, 4).toString('latin1') === 'PNG') {
     return { w: b.readUInt32BE(16), h: b.readUInt32BE(20), kind: 'png' }
-  if (b.slice(0, 4).toString() === 'RIFF' && b.slice(8, 12).toString() === 'WEBP') {
-    const c = b.slice(12, 16).toString()
-    if (c === 'VP8X')
+  }
+
+  if (b.length > 10 && b.slice(0, 3).toString('latin1') === 'GIF') {
+    return { w: b.readUInt16LE(6), h: b.readUInt16LE(8), kind: 'gif' }
+  }
+
+  if (b.length > 4 && b[0] === 0xff && b[1] === 0xd8) {
+    // Walk the segment chain to the frame header, which carries the size.
+    let i = 2
+    while (i + 9 < b.length) {
+      if (b[i] !== 0xff) {
+        i += 1
+        continue
+      }
+      const marker = b[i + 1]
+      if (marker === 0xd8 || marker === 0x01 || (marker >= 0xd0 && marker <= 0xd7)) {
+        i += 2
+        continue
+      }
+      const length = b.readUInt16BE(i + 2)
+      const isFrame =
+        (marker >= 0xc0 && marker <= 0xc3) ||
+        (marker >= 0xc5 && marker <= 0xc7) ||
+        (marker >= 0xc9 && marker <= 0xcb) ||
+        (marker >= 0xcd && marker <= 0xcf)
+      if (isFrame) {
+        return { w: b.readUInt16BE(i + 7), h: b.readUInt16BE(i + 5), kind: 'jpeg' }
+      }
+      i += 2 + length
+    }
+    return null
+  }
+
+  if (
+    b.length > 30 &&
+    b.slice(0, 4).toString('latin1') === 'RIFF' &&
+    b.slice(8, 12).toString('latin1') === 'WEBP'
+  ) {
+    const chunk = b.slice(12, 16).toString('latin1')
+    if (chunk === 'VP8X') {
       return {
         w: (b.readUIntLE(24, 3) & 0xffffff) + 1,
         h: (b.readUIntLE(27, 3) & 0xffffff) + 1,
         kind: 'webp',
       }
-    if (c === 'VP8L') {
+    }
+    if (chunk === 'VP8L') {
       const n = b.readUInt32LE(21)
       return { w: (n & 0x3fff) + 1, h: ((n >> 14) & 0x3fff) + 1, kind: 'webp' }
     }
-    if (c === 'VP8 ')
+    if (chunk === 'VP8 ') {
       return { w: b.readUInt16LE(26) & 0x3fff, h: b.readUInt16LE(28) & 0x3fff, kind: 'webp' }
+    }
   }
+
   return null
+}
+
+/**
+ * Checks the bytes an image should end with.
+ *
+ * The header alone cannot show truncation: a PNG's dimensions live in its
+ * first 24 bytes, so a file cut in half still probes as a valid image. Each
+ * format has a terminator or a recorded length, and that is what goes missing.
+ *
+ * @param {Buffer} b - The whole file.
+ * @param {string} kind - The kind `probe` reported.
+ * @returns {boolean} True when the file reaches its proper end.
+ */
+const isComplete = (b, kind) => {
+  if (kind === 'png') return b.slice(-8, -4).toString('latin1') === 'IEND'
+  if (kind === 'gif') return b[b.length - 1] === 0x3b
+  if (kind === 'jpeg') return b[b.length - 2] === 0xff && b[b.length - 1] === 0xd9
+  // RIFF records its own payload length, which truncation leaves overstated.
+  if (kind === 'webp') return b.readUInt32LE(4) === b.length - 8
+  return true
+}
+
+/** The extensions each probed kind may be recorded as. */
+const KIND_EXTENSIONS = {
+  png: ['png'],
+  gif: ['gif'],
+  jpeg: ['jpg', 'jpeg'],
+  webp: ['webp'],
 }
 
 const reached = new Set()
@@ -110,16 +190,24 @@ for (const nf of files.filter((f) => f.startsWith('node.'))) {
           `${title} / ${link?.title}: ${rel} is ${size} bytes, entity says ${file.filesize[0].value}`
         )
 
+      // A truncated or corrupt image whose recorded filesize still matches
+      // would otherwise pass, so one that cannot be read fails rather than warns.
       const real = probe(abs)
-      if (!real) warn.push(`${title} / ${link?.title}: ${rel} dimensions not readable`)
-      else if (real.w !== image.width || real.h !== image.height) {
-        fail.push(
-          `${title} / ${link?.title}: ${rel} is ${real.w}x${real.h}, entity says ${image.width}x${image.height}`
-        )
+      if (!real) {
+        fail.push(`${title} / ${link?.title}: ${rel} is not a readable png, gif, jpeg or webp`)
+      } else if (!isComplete(fs.readFileSync(abs), real.kind)) {
+        fail.push(`${title} / ${link?.title}: ${rel} is a truncated ${real.kind}`)
+      } else {
+        if (real.w !== image.width || real.h !== image.height) {
+          fail.push(
+            `${title} / ${link?.title}: ${rel} is ${real.w}x${real.h}, entity says ${image.width}x${image.height}`
+          )
+        }
+        const mime = file.filemime[0].value
+        if (!KIND_EXTENSIONS[real.kind].some((ext) => mime === `image/${ext}`)) {
+          fail.push(`${title} / ${link?.title}: ${rel} is ${real.kind}, entity says ${mime}`)
+        }
       }
-      const mime = file.filemime[0].value
-      if (real && !mime.endsWith(real.kind))
-        fail.push(`${title} / ${link?.title}: ${rel} is ${real.kind}, entity says ${mime}`)
       if (size > 400 * 1024)
         warn.push(
           `${title} / ${link?.title}: ${rel} is ${(size / 1024).toFixed(0)}KB, over the 400KB tile budget`
@@ -161,6 +249,44 @@ if (!fs.existsSync(indexPath)) {
 const orphans = files.filter((f) => /^(paragraph|media|file)\./.test(f) && !reached.has(uuidOf(f)))
 orphans.forEach((o) => warn.push(`orphan, not reachable from a published node: ${o}`))
 
+/**
+ * Fetches a URL's status with a real GET, following redirects.
+ *
+ * `node:https` rather than `fetch`: the repository's floor is Node 16.18.1,
+ * where global fetch needs --experimental-fetch and is otherwise undefined.
+ * GET rather than HEAD, because a host can answer 200 to HEAD and 502 to the
+ * GET a visitor actually makes. The body is discarded once the status is in.
+ *
+ * @param {string} target - The URL to request.
+ * @param {number} [depth] - Redirects followed so far.
+ * @returns {Promise<number>} The final status code.
+ */
+const statusOf = (target, depth = 0) =>
+  new Promise((resolve, reject) => {
+    if (depth > 5) {
+      reject(new Error('too many redirects'))
+      return
+    }
+    const url = new URL(target)
+    const client = url.protocol === 'http:' ? http : https
+    const request = client.get(
+      target,
+      { headers: { 'user-agent': 'druxt-demo-link-check' }, timeout: 20000 },
+      (response) => {
+        const { statusCode, headers } = response
+        if (statusCode >= 300 && statusCode < 400 && headers.location) {
+          response.resume()
+          resolve(statusOf(new URL(headers.location, target).href, depth + 1))
+          return
+        }
+        response.resume()
+        response.on('end', () => resolve(statusCode))
+      }
+    )
+    request.on('timeout', () => request.destroy(new Error('timed out')))
+    request.on('error', reject)
+  })
+
 if (checkLinks) {
   const seen = new Map()
   for (const [title, label, uri] of links) {
@@ -168,15 +294,9 @@ if (checkLinks) {
     seen.set(uri, true)
     let status = 0
     try {
-      const ctrl = new AbortController()
-      const t = setTimeout(() => ctrl.abort(), 20000)
-      let res = await fetch(uri, { method: 'HEAD', redirect: 'follow', signal: ctrl.signal })
-      if (res.status === 405 || res.status === 501)
-        res = await fetch(uri, { redirect: 'follow', signal: ctrl.signal })
-      clearTimeout(t)
-      status = res.status
+      status = await statusOf(uri)
     } catch (e) {
-      fail.push(`${title} / ${label}: ${uri} did not respond (${e.cause?.code || e.name})`)
+      fail.push(`${title} / ${label}: ${uri} did not respond (${e.code || e.message})`)
       continue
     }
     if (status >= 400) fail.push(`${title} / ${label}: ${uri} returned HTTP ${status}`)

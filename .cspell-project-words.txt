@@ -37,6 +37,7 @@ giget
 gitleaks
 gtag
 hverlin
+IEND
 instantiator
 intelephense
 interruptible
