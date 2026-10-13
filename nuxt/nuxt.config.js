@@ -106,7 +106,18 @@ export default {
       { hid: 'twitter:image', name: 'twitter:image', content: OG_IMAGE },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'icon',
+        type: 'image/x-icon',
+        href: '/favicon.ico',
+        sizes: '16x16 32x32 48x48',
+      },
+      { rel: 'icon', type: 'image/png', href: '/icon.png', sizes: '192x192' },
+      {
+        rel: 'apple-touch-icon',
+        href: '/apple-touch-icon.png',
+        sizes: '180x180',
+      },
       { hid: 'canonical', rel: 'canonical', href: SITE_ORIGIN + '/' },
       // llmstxt.org v2 discovery: the llms.txt that describes this page.
       // Sent as a header too, from static/_headers, so a non-HTML response
@@ -119,6 +130,31 @@ export default {
       },
     ],
     script: [
+      // schema.org, so a search engine reads the hub as a site published by
+      // Druxt rather than inferring it. sameAs ties the hosts together: they
+      // are separate domains with no other signal that they are one project.
+      {
+        hid: 'ld-json',
+        type: 'application/ld+json',
+        json: {
+          '@context': 'https://schema.org',
+          '@type': 'WebSite',
+          name: SITE_TITLE,
+          url: SITE_ORIGIN + '/',
+          description: SITE_DESCRIPTION,
+          publisher: {
+            '@type': 'Organization',
+            name: SITE_NAME,
+            url: 'https://druxtjs.org',
+            logo: SITE_ORIGIN + '/icon.png',
+            sameAs: [
+              'https://github.com/druxt/druxt.js',
+              'https://www.drupal.org/project/druxt',
+              'https://discord.druxtjs.org',
+            ],
+          },
+        },
+      },
       ...(analyticsEnabled
         ? [
             {

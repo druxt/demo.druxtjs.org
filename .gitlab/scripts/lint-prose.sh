@@ -8,7 +8,8 @@
 # Markdown: files added or modified in <base>..HEAD; with --all, every tracked
 # markdown file. Without an argument the base is read from PROSE_BASE_SHA,
 # then CI_MERGE_REQUEST_DIFF_BASE_SHA, then CI_COMMIT_BEFORE_SHA. With none of
-# those the files and message of HEAD alone are read.
+# those the files and message of HEAD alone are read. Git trailers (Signed-off-by,
+# Co-authored-by) are dropped from each message before it is linted.
 #
 # Description: MERGE_REQUEST_DESCRIPTION, then CI_MERGE_REQUEST_DESCRIPTION.
 # A merge request pipeline with neither is refused, as check-attribution.sh
@@ -34,7 +35,7 @@ base=""
 for arg in "$@"; do
   case "$arg" in
     --all) all=1 ;;
-    -h|--help) sed -n '2,28p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,29p' "$0"; exit 0 ;;
     *) base="$arg" ;;
   esac
 done
@@ -105,9 +106,45 @@ else
   shas="$(git rev-parse HEAD)"
 fi
 commits=0
+mkdir -p "$work/trailers"
 for sha in $shas; do
   commits=$((commits + 1))
-  git log -1 --format=%B "$sha" > "$inputs/commits/$(git rev-parse --short "$sha").md"
+  short="$(git rev-parse --short "$sha")"
+  # Trailers such as the Co-authored-by GitHub adds on squash are metadata,
+  # not prose. They are dropped by position rather than by matching their text,
+  # because `git interpret-trailers` normalises what it prints: it rewrites
+  # `Co-authored-by:  Jane <j@e>` with one space, so a comparison against the
+  # original line never matches and the trailer survives into the input.
+  git log -1 --format=%B "$sha" > "$work/trailers/$short.txt"
+  git interpret-trailers --only-trailers --only-input \
+    < "$work/trailers/$short.txt" > "$work/trailers/$short.trailers"
+  if [ -s "$work/trailers/$short.trailers" ]; then
+    # Git puts the trailers in the final paragraph, so drop that paragraph when
+    # every line in it is a trailer or a folded continuation of one.
+    awk '
+      { line[NR] = $0 }
+      END {
+        start = 0
+        for (i = NR; i >= 1; i--) {
+          if (line[i] ~ /^[[:space:]]*$/) { start = i; break }
+        }
+        if (start > 0) {
+          trailers = 1
+          for (i = start + 1; i <= NR; i++) {
+            if (line[i] ~ /^[[:space:]]*$/) continue
+            if (line[i] !~ /^[A-Za-z][A-Za-z0-9-]*:[[:space:]]/ && line[i] !~ /^[[:space:]]/) {
+              trailers = 0
+              break
+            }
+          }
+          if (trailers && start < NR) NR = start - 1
+        }
+        for (i = 1; i <= NR; i++) print line[i]
+      }
+    ' "$work/trailers/$short.txt" > "$inputs/commits/$short.md"
+  else
+    cp "$work/trailers/$short.txt" "$inputs/commits/$short.md"
+  fi
 done
 
 description_state="no description"
