@@ -111,11 +111,40 @@ for sha in $shas; do
   commits=$((commits + 1))
   short="$(git rev-parse --short "$sha")"
   # Trailers such as the Co-authored-by GitHub adds on squash are metadata,
-  # not prose.
+  # not prose. They are dropped by position rather than by matching their text,
+  # because `git interpret-trailers` normalises what it prints: it rewrites
+  # `Co-authored-by:  Jane <j@e>` with one space, so a comparison against the
+  # original line never matches and the trailer survives into the input.
   git log -1 --format=%B "$sha" > "$work/trailers/$short.txt"
-  git interpret-trailers --only-trailers --only-input < "$work/trailers/$short.txt" > "$work/trailers/$short.trailers"
-  awk 'FILENAME == ARGV[1] { trailer[$0] = 1; next } !($0 in trailer)' \
-    "$work/trailers/$short.trailers" "$work/trailers/$short.txt" > "$inputs/commits/$short.md"
+  git interpret-trailers --only-trailers --only-input \
+    < "$work/trailers/$short.txt" > "$work/trailers/$short.trailers"
+  if [ -s "$work/trailers/$short.trailers" ]; then
+    # Git puts the trailers in the final paragraph, so drop that paragraph when
+    # every line in it is a trailer or a folded continuation of one.
+    awk '
+      { line[NR] = $0 }
+      END {
+        start = 0
+        for (i = NR; i >= 1; i--) {
+          if (line[i] ~ /^[[:space:]]*$/) { start = i; break }
+        }
+        if (start > 0) {
+          trailers = 1
+          for (i = start + 1; i <= NR; i++) {
+            if (line[i] ~ /^[[:space:]]*$/) continue
+            if (line[i] !~ /^[A-Za-z][A-Za-z0-9-]*:[[:space:]]/ && line[i] !~ /^[[:space:]]/) {
+              trailers = 0
+              break
+            }
+          }
+          if (trailers && start < NR) NR = start - 1
+        }
+        for (i = 1; i <= NR; i++) print line[i]
+      }
+    ' "$work/trailers/$short.txt" > "$inputs/commits/$short.md"
+  else
+    cp "$work/trailers/$short.txt" "$inputs/commits/$short.md"
+  fi
 done
 
 description_state="no description"
