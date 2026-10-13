@@ -79,7 +79,11 @@ jobs:
           fail: true
           jobSummary: true
 
+      # Only main and develop deploy. A deploy preview for every pull request
+      # push burns the account's build minutes, and a local tunnel shows a
+      # branch's build to whoever needs to see it without spending them.
       - name: Deploy to Netlify
+        if: github.event_name == 'push'
         uses: nwtgck/actions-netlify@v1.2
         with:
           publish-dir: './nuxt/dist'
