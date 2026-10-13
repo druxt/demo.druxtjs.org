@@ -3,7 +3,7 @@ _core:
 langcode: en
 uuid: d7c38942-1402-4d3e-a56a-203b8a513837
 name: 'Drush Site-Install'
-mail: admin@example.com
+mail: noreply@druxtjs.org
 slogan: ''
 page:
   403: ''

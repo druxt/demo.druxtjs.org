@@ -8,7 +8,8 @@
 # Markdown: files added or modified in <base>..HEAD; with --all, every tracked
 # markdown file. Without an argument the base is read from PROSE_BASE_SHA,
 # then CI_MERGE_REQUEST_DIFF_BASE_SHA, then CI_COMMIT_BEFORE_SHA. With none of
-# those the files and message of HEAD alone are read.
+# those the files and message of HEAD alone are read. Git trailers (Signed-off-by,
+# Co-authored-by) are dropped from each message before it is linted.
 #
 # Description: MERGE_REQUEST_DESCRIPTION, then CI_MERGE_REQUEST_DESCRIPTION.
 # A merge request pipeline with neither is refused, as check-attribution.sh
@@ -34,7 +35,7 @@ base=""
 for arg in "$@"; do
   case "$arg" in
     --all) all=1 ;;
-    -h|--help) sed -n '2,28p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,29p' "$0"; exit 0 ;;
     *) base="$arg" ;;
   esac
 done
@@ -105,9 +106,16 @@ else
   shas="$(git rev-parse HEAD)"
 fi
 commits=0
+mkdir -p "$work/trailers"
 for sha in $shas; do
   commits=$((commits + 1))
-  git log -1 --format=%B "$sha" > "$inputs/commits/$(git rev-parse --short "$sha").md"
+  short="$(git rev-parse --short "$sha")"
+  # Trailers such as the Co-authored-by GitHub adds on squash are metadata,
+  # not prose.
+  git log -1 --format=%B "$sha" > "$work/trailers/$short.txt"
+  git interpret-trailers --only-trailers --only-input < "$work/trailers/$short.txt" > "$work/trailers/$short.trailers"
+  awk 'FILENAME == ARGV[1] { trailer[$0] = 1; next } !($0 in trailer)' \
+    "$work/trailers/$short.trailers" "$work/trailers/$short.txt" > "$inputs/commits/$short.md"
 done
 
 description_state="no description"
