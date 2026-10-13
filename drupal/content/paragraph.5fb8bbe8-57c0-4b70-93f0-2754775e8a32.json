@@ -1,7 +1,7 @@
 {
     "uuid": [
         {
-            "value": "5c0972d2-cb66-4def-b2f0-a335726803df"
+            "value": "5fb8bbe8-57c0-4b70-93f0-2754775e8a32"
         }
     ],
     "langcode": [
@@ -23,10 +23,15 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T00:21:37+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
-    "behavior_settings": [],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
     "default_langcode": [
         {
             "value": true
@@ -39,9 +44,8 @@
     ],
     "field_link": [
         {
-            "uri": "https:\/\/storybook.umami.demo.druxtjs.org",
-            "resolvable_uri": "https:\/\/storybook.umami.demo.druxtjs.org",
-            "title": "Storybook",
+            "uri": "https://druxtjs.org/playground",
+            "title": "Playground",
             "options": {
                 "attributes": []
             }
@@ -50,7 +54,7 @@
     "field_media": [
         {
             "target_type": "media",
-            "target_uuid": "df44304a-fba6-4c7f-a76a-25c6d61e7255"
+            "target_uuid": "f0cdbea4-d3f3-4f14-9a3c-7b44546ddfba"
         }
     ]
 }

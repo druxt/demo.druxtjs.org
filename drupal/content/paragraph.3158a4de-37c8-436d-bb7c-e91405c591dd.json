@@ -1,7 +1,7 @@
 {
     "uuid": [
         {
-            "value": "135769ff-6a09-4892-9cc4-1c48c3c4e83b"
+            "value": "3158a4de-37c8-436d-bb7c-e91405c591dd"
         }
     ],
     "langcode": [
@@ -23,10 +23,15 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T00:21:23+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
-    "behavior_settings": [],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
     "default_langcode": [
         {
             "value": true
@@ -39,9 +44,8 @@
     ],
     "field_link": [
         {
-            "uri": "https:\/\/api.umami.demo.druxtjs.org\/jsonapi",
-            "resolvable_uri": "https:\/\/api.umami.demo.druxtjs.org\/jsonapi",
-            "title": "Backend",
+            "uri": "https://umami.demo.druxtjs.org",
+            "title": "Frontend",
             "options": {
                 "attributes": []
             }
@@ -50,7 +54,7 @@
     "field_media": [
         {
             "target_type": "media",
-            "target_uuid": "b12e4ada-1b02-4f16-8f60-74095c43e5f7"
+            "target_uuid": "57ec3690-2de1-4f1c-a584-492f2e9b9f15"
         }
     ]
 }

@@ -1,0 +1,92 @@
+{
+    "uuid": [
+        {
+            "value": "f0cdbea4-d3f3-4f14-9a3c-7b44546ddfba"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image",
+            "target_type": "media_type",
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_user": [],
+    "revision_log_message": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "name": [
+        {
+            "value": "druxtjs-org-playground.png"
+        }
+    ],
+    "thumbnail": [
+        {
+            "alt": "The druxtjs.org live component playground",
+            "title": null,
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "8459ff80-50f6-4ba3-8d5a-a69029ad0e60"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "field_media_image": [
+        {
+            "alt": "The druxtjs.org live component playground",
+            "title": "",
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "8459ff80-50f6-4ba3-8d5a-a69029ad0e60"
+        }
+    ]
+}

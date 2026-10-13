@@ -1,7 +1,7 @@
 {
     "uuid": [
         {
-            "value": "4d9b997b-6bd6-4b35-b577-35284c609260"
+            "value": "5c06b205-5573-4a1f-9ee8-3e82f54c5a5f"
         }
     ],
     "langcode": [
@@ -23,10 +23,15 @@
     ],
     "created": [
         {
-            "value": "2022-09-10T00:21:11+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
-    "behavior_settings": [],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
     "default_langcode": [
         {
             "value": true
@@ -39,9 +44,8 @@
     ],
     "field_link": [
         {
-            "uri": "https:\/\/umami.demo.druxtjs.org",
-            "resolvable_uri": "https:\/\/umami.demo.druxtjs.org",
-            "title": "Frontend",
+            "uri": "https://github.com/druxt/umami.demo.druxtjs.org",
+            "title": "Source code",
             "options": {
                 "attributes": []
             }
@@ -50,7 +54,7 @@
     "field_media": [
         {
             "target_type": "media",
-            "target_uuid": "6b514479-1512-4355-86b6-0686f612706f"
+            "target_uuid": "9e2c9644-b25f-47c1-8e42-2578c4acf851"
         }
     ]
 }

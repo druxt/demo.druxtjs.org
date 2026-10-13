@@ -18,7 +18,8 @@
     ],
     "revision_timestamp": [
         {
-            "value": "2022-09-14T22:54:17+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "revision_uid": [
@@ -51,7 +52,8 @@
     ],
     "changed": [
         {
-            "value": "2022-09-14T22:54:17+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "promote": [
@@ -83,28 +85,31 @@
     ],
     "body": [
         {
-            "value": "<p>The Umami food magazine is the Drupal community built demonstration installation profile (say that three times fast). This Druxt frontend uses the DruxtSite module along with BootstrapVue components.<\/p>\r\n",
+            "value": "<p>Drupal’s own demonstration profile, rendered by DruxtSite in English and Spanish. Umami Go deals a card game from the magazine’s recipes, and the Entity Explorer shows the JSON:API request behind any render.</p>\r\n",
             "format": "basic_html",
-            "processed": "<p>The Umami food magazine is the Drupal community built demonstration installation profile (say that three times fast). This Druxt frontend uses the DruxtSite module along with BootstrapVue components.<\/p>",
             "summary": ""
         }
     ],
     "field_items": [
         {
             "target_type": "paragraph",
-            "target_uuid": "4d9b997b-6bd6-4b35-b577-35284c609260"
+            "target_uuid": "96ce18da-b79b-40a8-97c3-e382f47337c3"
         },
         {
             "target_type": "paragraph",
-            "target_uuid": "5c0972d2-cb66-4def-b2f0-a335726803df"
+            "target_uuid": "3158a4de-37c8-436d-bb7c-e91405c591dd"
         },
         {
             "target_type": "paragraph",
-            "target_uuid": "135769ff-6a09-4892-9cc4-1c48c3c4e83b"
+            "target_uuid": "a721a82f-b69b-491b-bea8-14a3e6093b46"
         },
         {
             "target_type": "paragraph",
-            "target_uuid": "c111a051-9726-4e85-8cf5-659ce91e0f86"
+            "target_uuid": "be0d66d9-bfa9-428a-9e5c-ce4c4356e6b0"
+        },
+        {
+            "target_type": "paragraph",
+            "target_uuid": "5c06b205-5573-4a1f-9ee8-3e82f54c5a5f"
         }
     ]
 }

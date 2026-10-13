@@ -1,6 +1,7 @@
 aarch
 actionlint
 anthropic
+apos
 appserver
 autobuild
 Autobuild
@@ -19,6 +20,7 @@ cweagans
 davidanson
 dbaeumer
 ddev
+describedby
 devcontainer
 devcontainers
 devpod
@@ -28,12 +30,14 @@ druxt
 druxtjs
 endswith
 extensionless
+filemime
 freetype
 gdlib
 giget
 gitleaks
 gtag
 hverlin
+IEND
 instantiator
 intelephense
 interruptible
@@ -46,6 +50,7 @@ Ksection
 lando
 Landofile
 lcov
+ldquo
 libasound
 libfreetype
 libgbm
@@ -60,7 +65,10 @@ libxml
 libxss
 libxtst
 libzip
+llms
+llmstxt
 lndo
+lsquo
 lychee
 lycheeverse
 makedirs
@@ -88,11 +96,14 @@ phpsab
 phpstan
 phpunit
 PKCE
+pngquant
 procps
+rdquo
 recognise
 recognised
 recognises
 repository
+rsquo
 setuptools
 shellcheck
 shivammathur

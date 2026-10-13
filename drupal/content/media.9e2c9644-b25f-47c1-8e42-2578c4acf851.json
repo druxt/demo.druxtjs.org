@@ -1,0 +1,92 @@
+{
+    "uuid": [
+        {
+            "value": "9e2c9644-b25f-47c1-8e42-2578c4acf851"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "bundle": [
+        {
+            "target_id": "image",
+            "target_type": "media_type",
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
+        }
+    ],
+    "revision_created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "revision_user": [],
+    "revision_log_message": [],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "name": [
+        {
+            "value": "umami-github.png"
+        }
+    ],
+    "thumbnail": [
+        {
+            "alt": "Umami food magazine demo source code on GitHub",
+            "title": null,
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "f5c6f7fd-0849-4f83-8d1c-2c4265a9ff82"
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "path": [
+        {
+            "alias": null,
+            "pid": null,
+            "langcode": "en"
+        }
+    ],
+    "field_media_image": [
+        {
+            "alt": "Umami food magazine demo source code on GitHub",
+            "title": "",
+            "width": 2560,
+            "height": 1440,
+            "target_type": "file",
+            "target_uuid": "f5c6f7fd-0849-4f83-8d1c-2c4265a9ff82"
+        }
+    ]
+}

@@ -1,7 +1,7 @@
 {
     "uuid": [
         {
-            "value": "b12e4ada-1b02-4f16-8f60-74095c43e5f7"
+            "value": "d8c1b21b-f034-4791-91f1-0aa43b88bc32"
         }
     ],
     "langcode": [
@@ -13,12 +13,13 @@
         {
             "target_id": "image",
             "target_type": "media_type",
-            "target_uuid": "dc800171-04a8-44b1-8442-95e7d7782a35"
+            "target_uuid": "e0512672-d4b7-4084-87d3-57e4e6b8ffd7"
         }
     ],
     "revision_created": [
         {
-            "value": "2022-09-10T02:16:23+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "revision_user": [],
@@ -36,27 +37,29 @@
     ],
     "name": [
         {
-            "value": "druxtjs-org-demo-umami-backend.png"
+            "value": "umami-storybook.png"
         }
     ],
     "thumbnail": [
         {
-            "alt": "Umami food magazine Drupal JSON:API backend",
+            "alt": "Umami food magazine Storybook component browser",
             "title": null,
-            "width": 3200,
-            "height": 1802,
+            "width": 2560,
+            "height": 1440,
             "target_type": "file",
-            "target_uuid": "2c588f6b-cb08-4430-8d46-b98ceba259da"
+            "target_uuid": "3a569999-fb87-4cf1-85e7-a23a1eb975f9"
         }
     ],
     "created": [
         {
-            "value": "2022-09-10T02:16:23+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "changed": [
         {
-            "value": "2022-09-10T02:16:23+00:00"
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
         }
     ],
     "default_langcode": [
@@ -78,12 +81,12 @@
     ],
     "field_media_image": [
         {
-            "alt": "Umami food magazine Drupal JSON:API backend",
+            "alt": "Umami food magazine Storybook component browser",
             "title": "",
-            "width": 3200,
-            "height": 1802,
+            "width": 2560,
+            "height": 1440,
             "target_type": "file",
-            "target_uuid": "2c588f6b-cb08-4430-8d46-b98ceba259da"
+            "target_uuid": "3a569999-fb87-4cf1-85e7-a23a1eb975f9"
         }
     ]
 }

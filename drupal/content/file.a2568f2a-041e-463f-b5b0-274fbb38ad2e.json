@@ -1,0 +1,55 @@
+{
+    "uuid": [
+        {
+            "value": "a2568f2a-041e-463f-b5b0-274fbb38ad2e"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "uid": [
+        {
+            "target_type": "user",
+            "target_uuid": "4cf17172-8f59-4b81-8a15-43daa951c8ae"
+        }
+    ],
+    "filename": [
+        {
+            "value": "umami-go.png"
+        }
+    ],
+    "uri": [
+        {
+            "value": "public://2026-10/umami-go.png"
+        }
+    ],
+    "filemime": [
+        {
+            "value": "image/png"
+        }
+    ],
+    "filesize": [
+        {
+            "value": 222526
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "changed": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ]
+}

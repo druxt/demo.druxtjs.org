@@ -41,12 +41,12 @@
             class="mb-4 text-3xl font-bold leading-tight tracking-tight sm:text-5xl"
           >
             Real Drupal sites,<br />decoupled with
-            <span class="text-brand-green">Nuxt</span>
+            <span class="text-brand-green">Druxt</span>
           </h1>
           <p class="mx-auto mb-8 max-w-xl text-lg text-ink-muted">
-            Every demo below is a working Drupal backend and a Druxt frontend,
-            deployed from a public repository you can read, fork and run
-            yourself.
+            Every demo below is a working Drupal backend serving JSON:API and a
+            Nuxt frontend that renders it, deployed from a public repository you
+            can read, fork and run yourself.
           </p>
           <a
             class="inline-flex items-center rounded-md bg-brand-green px-6 py-3 font-semibold text-ink-deep hover:bg-brand-green-hi"
@@ -82,19 +82,66 @@
           />
           <!-- eslint-enable vue/no-v-html -->
 
+          <!-- The first item is the feature: the thing a visitor can go and
+               do. The rest keep the tile grid. Content decides which is which
+               by its order in field_items, so this needs no extra field. -->
+          <DruxtEntity
+            v-if="feature(result)"
+            :key="feature(result).id"
+            v-bind="{
+              settings: { query: { include: includes } },
+              type: feature(result).type,
+              uuid: feature(result).id,
+            }"
+          >
+            <template #default="{ entity }">
+              <a
+                class="group mb-4 grid overflow-hidden rounded-lg border border-brand-green bg-ink-surface transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-link sm:grid-cols-[1.3fr_1fr]"
+                :href="entity.attributes.field_link.uri"
+                target="_blank"
+                rel="noopener"
+                @click="track(result, entity)"
+              >
+                <div class="aspect-[16/10] overflow-hidden bg-ink-shot">
+                  <NuxtImg
+                    v-if="imageOf(entity)"
+                    :alt="altOf(entity)"
+                    class="h-full w-full object-cover object-top opacity-90 group-hover:opacity-100"
+                    height="400"
+                    loading="lazy"
+                    :src="fileUrl(imageOf(entity))"
+                    width="640"
+                  />
+                </div>
+                <div class="flex flex-col justify-center gap-3 p-6 sm:p-8">
+                  <span
+                    class="w-fit rounded-full border border-ink-rule bg-ink-bg px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.04em] text-brand-teal"
+                  >
+                    The thing to try
+                  </span>
+                  <span
+                    class="text-xl font-semibold"
+                    v-text="entity.attributes.field_link.title"
+                  />
+                  <span
+                    class="inline-flex w-fit items-center rounded-md bg-brand-green px-4 py-2 text-sm font-semibold text-ink-deep group-hover:bg-brand-green-hi"
+                  >
+                    {{ entity.attributes.field_link.title }}
+                  </span>
+                </div>
+              </a>
+            </template>
+          </DruxtEntity>
+
           <!-- Item paragraphs -->
           <div
             class="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]"
           >
             <DruxtEntity
-              v-for="link of result.relationships.field_items.data"
+              v-for="link of supporting(result)"
               :key="link.id"
               v-bind="{
-                settings: {
-                  query: {
-                    include: ['field_media', 'field_media.field_media_image'],
-                  },
-                },
+                settings: { query: { include: includes } },
                 type: link.type,
                 uuid: link.id,
               }"
@@ -105,23 +152,16 @@
                   :href="entity.attributes.field_link.uri"
                   target="_blank"
                   rel="noopener"
-                  @click="
-                    $track('demo_click', {
-                      demo: result.attributes.title,
-                      link: entity.attributes.field_link.title,
-                      url: entity.attributes.field_link.uri,
-                    })
-                  "
+                  @click="track(result, entity)"
                 >
                   <div class="aspect-[16/10] overflow-hidden bg-ink-shot">
                     <NuxtImg
-                      v-if="
-                        ((entity.included || [])[1] || {}).type === 'file--file'
-                      "
-                      class="h-full w-full object-cover opacity-90 group-hover:opacity-100"
+                      v-if="imageOf(entity)"
+                      :alt="altOf(entity)"
+                      class="h-full w-full object-cover object-top opacity-90 group-hover:opacity-100"
                       height="180"
                       loading="lazy"
-                      :src="fileUrl(entity.included[1])"
+                      :src="fileUrl(imageOf(entity))"
                       width="320"
                     />
                   </div>
@@ -186,11 +226,53 @@
 
 <script>
 export default {
+  data: () => ({
+    includes: ['field_media', 'field_media.field_media_image'],
+  }),
+
   methods: {
+    // The first link paragraph, rendered large.
+    feature(result) {
+      return (result.relationships.field_items.data || [])[0]
+    },
+
+    // Everything after it, rendered as the tile grid.
+    supporting(result) {
+      return (result.relationships.field_items.data || []).slice(1)
+    },
+
+    // The included file, found by type rather than by position: the index
+    // shifted whenever a paragraph carried a different number of includes.
+    imageOf(entity) {
+      return (entity.included || []).find((item) => item.type === 'file--file')
+    },
+
+    // The alt text an editor wrote, which JSON:API carries on the media's
+    // image relationship rather than on the file. Empty when it is missing,
+    // which scripts/check-content.mjs fails the build for.
+    altOf(entity) {
+      const media = (entity.included || []).find((item) =>
+        String(item.type).startsWith('media--')
+      )
+      const image =
+        media && media.relationships && media.relationships.field_media_image
+      return (
+        (image && image.data && image.data.meta && image.data.meta.alt) || ''
+      )
+    },
+
     // JSON:API returns the file URI as a root-relative path; resolve it
     // against the backend rather than joining, which doubled the slash.
     fileUrl(file) {
       return new URL(file.attributes.uri.url, this.$druxt.settings.baseUrl).href
+    },
+
+    track(result, entity) {
+      this.$track('demo_click', {
+        demo: result.attributes.title,
+        link: entity.attributes.field_link.title,
+        url: entity.attributes.field_link.uri,
+      })
     },
   },
 }

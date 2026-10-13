@@ -1,5 +1,8 @@
 import fs from 'fs'
 import path from 'path'
+// Shared with the generated text files, so the name and the description
+// cannot change in one and miss the other.
+import { site } from './lib/site'
 
 // BASE_URL from the environment, else from the repository-root .env that
 // drupal/.devtools/start writes, else the DDEV project URL. A developer never
@@ -39,12 +42,13 @@ if (!/^G-[A-Z0-9]+$/.test(GA_MEASUREMENT_ID)) {
 // local builds never send hits into the real property.
 const analyticsEnabled = process.env.ANALYTICS_ENABLED === 'true'
 
-const SITE_ORIGIN = process.env.SITE_ORIGIN || 'https://demo.druxtjs.org'
-const SITE_NAME = 'DruxtJS'
-const SITE_TITLE = 'DruxtJS demos'
-const SITE_DESCRIPTION =
-  'Live demos of Drupal sites decoupled with Nuxt, each a working backend and Druxt frontend deployed from a public repository you can read, fork and run yourself.'
-const TWITTER_HANDLE = '@DruxtJS'
+const {
+  SITE_ORIGIN,
+  SITE_NAME,
+  SITE_TITLE,
+  SITE_DESCRIPTION,
+  TWITTER_HANDLE,
+} = site
 const OG_IMAGE = SITE_ORIGIN + '/og-druxt.png'
 
 export default {
@@ -104,6 +108,15 @@ export default {
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { hid: 'canonical', rel: 'canonical', href: SITE_ORIGIN + '/' },
+      // llmstxt.org v2 discovery: the llms.txt that describes this page.
+      // Sent as a header too, from static/_headers, so a non-HTML response
+      // carries it as well.
+      {
+        hid: 'llms',
+        rel: 'describedby',
+        type: 'text/markdown',
+        href: '/llms.txt',
+      },
     ],
     script: [
       ...(analyticsEnabled
@@ -136,6 +149,7 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '~/modules/seo-files',
     '@nuxtjs/eslint-module',
     '@nuxt/postcss8',
     ['@nuxt/image', { domains: [baseUrl] }],

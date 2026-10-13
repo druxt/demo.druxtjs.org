@@ -1,0 +1,60 @@
+{
+    "uuid": [
+        {
+            "value": "96ce18da-b79b-40a8-97c3-e382f47337c3"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "link",
+            "target_type": "paragraphs_type",
+            "target_uuid": "8978331b-0f0a-4937-9904-72ec4137662c"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "field_link": [
+        {
+            "uri": "https://umami.demo.druxtjs.org/play",
+            "title": "Umami Go",
+            "options": {
+                "attributes": []
+            }
+        }
+    ],
+    "field_media": [
+        {
+            "target_type": "media",
+            "target_uuid": "20485308-0cdf-4ade-a8f7-eb4b01d17f32"
+        }
+    ]
+}

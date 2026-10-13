@@ -1,0 +1,60 @@
+{
+    "uuid": [
+        {
+            "value": "a721a82f-b69b-491b-bea8-14a3e6093b46"
+        }
+    ],
+    "langcode": [
+        {
+            "value": "en"
+        }
+    ],
+    "type": [
+        {
+            "target_id": "link",
+            "target_type": "paragraphs_type",
+            "target_uuid": "8978331b-0f0a-4937-9904-72ec4137662c"
+        }
+    ],
+    "status": [
+        {
+            "value": true
+        }
+    ],
+    "created": [
+        {
+            "value": "2026-10-12T00:00:00+00:00",
+            "format": "Y-m-d\\TH:i:sP"
+        }
+    ],
+    "behavior_settings": [
+        {
+            "value": []
+        }
+    ],
+    "default_langcode": [
+        {
+            "value": true
+        }
+    ],
+    "revision_translation_affected": [
+        {
+            "value": true
+        }
+    ],
+    "field_link": [
+        {
+            "uri": "https://umami.demo.druxtjs.org/entity-explorer",
+            "title": "Entity Explorer",
+            "options": {
+                "attributes": []
+            }
+        }
+    ],
+    "field_media": [
+        {
+            "target_type": "media",
+            "target_uuid": "6b563752-c12c-450a-a1ac-12bd8cb085ef"
+        }
+    ]
+}

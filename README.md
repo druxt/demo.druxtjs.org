@@ -11,8 +11,9 @@
 [![Deploy](https://github.com/druxt/demo.druxtjs.org/actions/workflows/build-test-deploy.yml/badge.svg?branch=main)](https://github.com/druxt/demo.druxtjs.org/actions/workflows/build-test-deploy.yml)
 
 The source of [demo.druxtjs.org](https://demo.druxtjs.org): a list of live
-Drupal sites decoupled with Nuxt, each built with [Druxt](https://druxtjs.org)
-from a public repository.
+Drupal sites decoupled with [Druxt](https://druxtjs.org), each one a Drupal
+backend serving JSON:API and a Nuxt frontend rendering it, deployed from a
+public repository.
 
 The site is two applications in one repository. `drupal/` is a Drupal backend
 whose configuration and content are committed and imported by
