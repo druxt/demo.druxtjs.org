@@ -102,15 +102,19 @@
                 rel="noopener"
                 @click="track(result, entity)"
               >
+                <!-- The panel is capped by the 64rem container, so it never
+                     exceeds about 560 CSS pixels. One derivative at twice that
+                     is correct at every width; a sizes list computed from the
+                     breakpoints picked 234 pixels for a full-width phone. -->
                 <div class="aspect-[16/10] overflow-hidden bg-ink-shot">
                   <NuxtImg
                     v-if="imageOf(entity)"
                     :alt="altOf(entity)"
                     class="h-full w-full object-cover object-top opacity-90 group-hover:opacity-100"
-                    height="400"
+                    height="750"
                     loading="lazy"
                     :src="fileUrl(imageOf(entity))"
-                    width="640"
+                    width="1200"
                   />
                 </div>
                 <div class="flex flex-col justify-center gap-3 p-6 sm:p-8">
@@ -133,9 +137,14 @@
             </template>
           </DruxtEntity>
 
-          <!-- Item paragraphs -->
+          <!-- The supporting links scroll sideways at every width, so a tile is
+               the same size on a phone as on a desktop. A grid that stretched
+               them to the column blew a 320 pixel screenshot up to 384. -->
           <div
-            class="grid gap-4 sm:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(14rem,1fr))]"
+            class="tile-scroller grid snap-x snap-mandatory grid-flow-col auto-cols-[15rem] gap-4 overflow-x-auto py-1"
+            role="group"
+            :aria-label="`${result.attributes.title} links`"
+            tabindex="0"
           >
             <DruxtEntity
               v-for="link of supporting(result)"
@@ -148,7 +157,7 @@
             >
               <template #default="{ entity }">
                 <a
-                  class="group block overflow-hidden rounded-lg border border-ink-rule bg-ink-surface transition-colors duration-150 hover:border-brand-green focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-link motion-safe:hover:-translate-y-0.5 motion-safe:transition"
+                  class="group block snap-start overflow-hidden rounded-lg border border-ink-rule bg-ink-surface transition-colors duration-150 hover:border-brand-green focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-link motion-safe:hover:-translate-y-0.5 motion-safe:transition"
                   :href="entity.attributes.field_link.uri"
                   target="_blank"
                   rel="noopener"
@@ -159,10 +168,10 @@
                       v-if="imageOf(entity)"
                       :alt="altOf(entity)"
                       class="h-full w-full object-cover object-top opacity-90 group-hover:opacity-100"
-                      height="180"
+                      height="300"
                       loading="lazy"
                       :src="fileUrl(imageOf(entity))"
-                      width="320"
+                      width="480"
                     />
                   </div>
                   <div
@@ -277,3 +286,26 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+/* The row is focusable so it can be scrolled from the keyboard, and the
+   scrollbar is drawn for the dark ground rather than left at the default.
+   The colour is ink-rule; stylelint rejects Tailwind's theme() here. */
+.tile-scroller {
+  scrollbar-width: thin;
+  scrollbar-color: #33465a transparent;
+}
+
+.tile-scroller::-webkit-scrollbar {
+  height: 6px;
+}
+
+.tile-scroller::-webkit-scrollbar-thumb {
+  background: #33465a;
+  border-radius: 3px;
+}
+
+.tile-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+</style>
